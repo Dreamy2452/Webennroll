@@ -1,233 +1,685 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Explore colleges — UniApply PH</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/styles.css" />
-<style>
-  body {
-    background-color: #ffffff;
-    color: #0f172a;
-    font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
-    margin: 0;
-  }
-  .explore-header {
-    background-color: #ffffff;
-    padding: 30px 20px 20px 20px;
-    border-bottom: 1px solid #e2e8f0;
-  }
-  .explore-header-inner {
-    max-width: 1100px;
-    margin: 0 auto;
-  }
-  .explore-header h1 {
-    font-size: 2.2rem;
-    font-weight: 800;
-    color: #0f172a;
-    margin-bottom: 16px;
-    letter-spacing: -0.5px;
-  }
-  .explore-search-row {
-    display: flex;
-    gap: 12px;
-    max-width: 850px;
-  }
-  .explore-search-input-wrap {
-    flex: 1;
-    position: relative;
-    background: #f8fafc;
-    border: 1px solid #cbd5e1;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    padding: 0 14px;
-  }
-  .explore-search-input-wrap svg {
-    color: #64748b;
-    margin-right: 10px;
-    flex-shrink: 0;
-  }
-  .explore-search-input {
-    width: 100%;
-    border: none;
-    outline: none;
-    padding: 12px 0;
-    font-size: 1rem;
-    color: #0f172a;
-    background: transparent;
-  }
-  .explore-search-btn {
-    background-color: #0f172a;
-    color: #ffffff;
-    border: none;
-    padding: 0 24px;
-    font-weight: 700;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 1rem;
-  }
-  
-  /* College Cards Grid */
-  .uni-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 24px;
-    margin-top: 20px;
-  }
-  .uni-card {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 12px;
-    overflow: hidden;
-    text-decoration: none;
-    color: inherit;
-    transition: transform 0.2s, box-shadow 0.2s;
-    display: flex;
-    flex-direction: column;
-  }
-  .uni-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-  }
-  .uni-card-img {
-    width: 100%;
-    height: 180px;
-    object-fit: cover;
-    background-color: #e2e8f0;
-  }
-  .uni-card-body {
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-  }
-  .uni-card-title {
-    font-size: 1.15rem;
-    font-weight: 700;
-    color: #0f172a;
-    margin-bottom: 6px;
-  }
-  .uni-card-location {
-    font-size: 0.9rem;
-    color: #64748b;
-    margin-bottom: 12px;
-  }
-  .uni-card-action {
-    margin-top: auto;
-    font-size: 0.85rem;
-    font-weight: 700;
-    color: #0284c7;
-  }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Find a College</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f7f8fa;
+            color: #202631;
+        }
+
+        .page {
+            max-width: 1120px;
+            margin: 0 auto;
+            padding: 38px 24px 60px;
+        }
+
+        /* PAGE HEADER */
+
+        .page-header {
+            margin-bottom: 26px;
+        }
+
+        .page-header h1 {
+            font-size: 30px;
+            font-weight: 700;
+            letter-spacing: -0.4px;
+            margin-bottom: 7px;
+        }
+
+        .page-header p {
+            color: #707887;
+            font-size: 15px;
+            line-height: 1.5;
+        }
+
+        /* SEARCH */
+
+        .search-container {
+            position: relative;
+            margin-bottom: 18px;
+        }
+
+        .search-container input {
+            width: 100%;
+            height: 52px;
+            border: 1px solid #d9dee6;
+            border-radius: 7px;
+            background: #ffffff;
+            padding: 0 18px 0 47px;
+            outline: none;
+            font-size: 15px;
+            color: #252b35;
+        }
+
+        .search-container input:focus {
+            border-color: #315dcc;
+            box-shadow: 0 0 0 3px rgba(49, 93, 204, 0.08);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 17px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #727b89;
+            font-size: 19px;
+            pointer-events: none;
+        }
+
+        /* FILTERS */
+
+        .filters {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 30px;
+            overflow-x: auto;
+            padding-bottom: 3px;
+        }
+
+        .filter-btn {
+            border: 1px solid #d9dee6;
+            background: #ffffff;
+            color: #596273;
+            border-radius: 6px;
+            padding: 9px 16px;
+            font-size: 14px;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .filter-btn:hover {
+            border-color: #315dcc;
+            color: #315dcc;
+        }
+
+        .filter-btn.active {
+            background: #315dcc;
+            border-color: #315dcc;
+            color: #ffffff;
+        }
+
+        /* SECTION */
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 14px;
+        }
+
+        .section-header h2 {
+            font-size: 19px;
+            font-weight: 700;
+        }
+
+        .result-count {
+            font-size: 13px;
+            color: #7a8290;
+        }
+
+        /* COLLEGE GRID */
+
+        .college-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+        }
+
+        /* COLLEGE CARD */
+
+        .college-card {
+            display: flex;
+            gap: 18px;
+            min-height: 160px;
+            padding: 20px;
+            background: #ffffff;
+            border: 1px solid #e0e4ea;
+            border-radius: 8px;
+            transition: border-color 0.18s ease,
+                        box-shadow 0.18s ease;
+        }
+
+        .college-card:hover {
+            border-color: #c1c9d6;
+            box-shadow: 0 5px 16px rgba(20, 30, 50, 0.05);
+        }
+
+        /* LOGO */
+
+        .college-logo {
+            width: 78px;
+            height: 78px;
+            flex: 0 0 78px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border: 1px solid #e3e6eb;
+            border-radius: 6px;
+            background: #ffffff;
+
+            overflow: hidden;
+        }
+
+        .college-logo img {
+            width: 62px;
+            height: 62px;
+            object-fit: contain;
+        }
+
+        /* INFORMATION */
+
+        .college-info {
+            min-width: 0;
+            flex: 1;
+        }
+
+        .college-info h3 {
+            font-size: 17px;
+            font-weight: 700;
+            line-height: 1.35;
+            margin-bottom: 7px;
+        }
+
+        .location {
+            color: #737c8b;
+            font-size: 14px;
+            line-height: 1.4;
+            margin-bottom: 17px;
+        }
+
+        .website-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+
+            color: #315dcc;
+            text-decoration: none;
+
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .website-link:hover {
+            text-decoration: underline;
+        }
+
+        /* NO RESULTS */
+
+        .no-results {
+            display: none;
+            text-align: center;
+            background: #ffffff;
+            border: 1px solid #e0e4ea;
+            border-radius: 8px;
+            padding: 45px 20px;
+        }
+
+        .no-results h3 {
+            font-size: 17px;
+            margin-bottom: 6px;
+        }
+
+        .no-results p {
+            color: #7a8290;
+            font-size: 14px;
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 760px) {
+
+            .page {
+                padding: 28px 16px 45px;
+            }
+
+            .college-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .page-header h1 {
+                font-size: 27px;
+            }
+        }
+
+        @media (max-width: 450px) {
+
+            .college-card {
+                padding: 16px;
+                gap: 13px;
+            }
+
+            .college-logo {
+                width: 65px;
+                height: 65px;
+                flex-basis: 65px;
+            }
+
+            .college-logo img {
+                width: 52px;
+                height: 52px;
+            }
+
+            .college-info h3 {
+                font-size: 15px;
+            }
+
+            .location,
+            .website-link {
+                font-size: 13px;
+            }
+        }
+    </style>
 </head>
+
 <body>
 
-<!-- Navbar -->
-<nav class="navbar" style="border-bottom: 1px solid #e2e8f0; background: #ffffff;">
-  <div class="navbar-inner" style="max-width: 1100px; margin: 0 auto; padding: 0 20px; display: flex; justify-content: space-between; align-items: center; height: 70px;">
-    <a href="index.html" class="brand" style="text-decoration: none; display: flex; align-items: center; gap: 10px;">
-      <div class="brand-mark" style="background:#0284c7; color:#fff; width:36px; height:36px; display:flex; align-items:center; justify-content:center; font-weight:bold; border-radius:8px;">UA</div>
-      <div class="brand-text" style="font-weight:bold; font-size:1.2rem; color:#0f172a;">UniApply <span style="color:#0284c7;">PH</span></div>
-    </a>
-    
-    <!-- Malinis na Menu Button -->
-    <button class="menu-toggle" id="menuToggle" aria-label="Open Menu" style="background: #f8fafc; border: 1px solid #cbd5e1; padding: 6px 14px; border-radius: 6px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; color: #0f172a;">
-      <span style="font-size: 1.1rem; line-height: 1;">☰</span> <span>Menu</span>
-    </button>
-  </div>
-</nav>
+<div class="page">
 
-<!-- Menu Drawer -->
-<div class="mobile-menu" id="mobileMenu">
-  <div class="mobile-menu-header">
-    <div class="brand">
-      <div class="brand-mark">UA</div>
-      <div class="brand-text">UniApply <span>PH</span></div>
+    <div class="page-header">
+        <h1>Find a College</h1>
+
+        <p>
+            Search for colleges and universities and visit their
+            official websites to learn more about admissions.
+        </p>
     </div>
-    <button class="modal-close" id="menuClose">✕ Close</button>
-  </div>
-  <div class="mobile-menu-links">
-    <div class="menu-section-title">NAVIGATION</div>
-    <a href="index.html" class="mobile-link">Home</a>
-    <a href="colleges.html" class="mobile-link">Discover Colleges</a>
-  </div>
+
+
+    <!-- SEARCH -->
+
+    <div class="search-container">
+
+        <span class="search-icon">⌕</span>
+
+        <input
+            type="search"
+            id="collegeSearch"
+            placeholder="Search colleges or universities..."
+            autocomplete="off"
+        >
+
+    </div>
+
+
+    <!-- FILTERS -->
+
+    <div class="filters">
+
+        <button
+            class="filter-btn active"
+            data-region="all"
+        >
+            All
+        </button>
+
+        <button
+            class="filter-btn"
+            data-region="NCR"
+        >
+            NCR
+        </button>
+
+        <button
+            class="filter-btn"
+            data-region="Luzon"
+        >
+            Luzon
+        </button>
+
+        <button
+            class="filter-btn"
+            data-region="Visayas"
+        >
+            Visayas
+        </button>
+
+        <button
+            class="filter-btn"
+            data-region="Mindanao"
+        >
+            Mindanao
+        </button>
+
+    </div>
+
+
+    <!-- COLLEGES -->
+
+    <div class="section-header">
+
+        <h2>Colleges & Universities</h2>
+
+        <span
+            class="result-count"
+            id="resultCount"
+        >
+            0 colleges
+        </span>
+
+    </div>
+
+
+    <div
+        class="college-grid"
+        id="collegeGrid"
+    >
+
+        <!-- UP DILIMAN -->
+
+        <article
+            class="college-card"
+            data-region="NCR"
+            data-name="University of the Philippines Diliman"
+        >
+
+            <div class="college-logo">
+
+                <img
+                    src="https://upload.wikimedia.org/wikipedia/en/6/6c/University_of_the_Philippines_seal.svg"
+                    alt="University of the Philippines Diliman logo"
+                >
+
+            </div>
+
+            <div class="college-info">
+
+                <h3>
+                    University of the Philippines Diliman
+                </h3>
+
+                <p class="location">
+                    📍 Quezon City, Metro Manila
+                </p>
+
+                <a
+                    class="website-link"
+                    href="https://upd.edu.ph/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    Official Website ↗
+                </a>
+
+            </div>
+
+        </article>
+
+
+        <!-- ATENEO -->
+
+        <article
+            class="college-card"
+            data-region="NCR"
+            data-name="Ateneo de Manila University"
+        >
+
+            <div class="college-logo">
+
+                <img
+                    src="https://upload.wikimedia.org/wikipedia/en/3/3b/Ateneo_de_Manila_University_seal.svg"
+                    alt="Ateneo de Manila University logo"
+                >
+
+            </div>
+
+            <div class="college-info">
+
+                <h3>
+                    Ateneo de Manila University
+                </h3>
+
+                <p class="location">
+                    📍 Quezon City, Metro Manila
+                </p>
+
+                <a
+                    class="website-link"
+                    href="https://www.ateneo.edu/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    Official Website ↗
+                </a>
+
+            </div>
+
+        </article>
+
+
+        <!-- DLSU -->
+
+        <article
+            class="college-card"
+            data-region="NCR"
+            data-name="De La Salle University"
+        >
+
+            <div class="college-logo">
+
+                <img
+                    src="https://upload.wikimedia.org/wikipedia/en/1/1b/De_La_Salle_University_Seal.svg"
+                    alt="De La Salle University logo"
+                >
+
+            </div>
+
+            <div class="college-info">
+
+                <h3>
+                    De La Salle University
+                </h3>
+
+                <p class="location">
+                    📍 Manila, Metro Manila
+                </p>
+
+                <a
+                    class="website-link"
+                    href="https://www.dlsu.edu.ph/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    Official Website ↗
+                </a>
+
+            </div>
+
+        </article>
+
+
+        <!-- UST -->
+
+        <article
+            class="college-card"
+            data-region="NCR"
+            data-name="University of Santo Tomas"
+        >
+
+            <div class="college-logo">
+
+                <img
+                    src="https://upload.wikimedia.org/wikipedia/en/5/5a/University_of_Santo_Tomas_Seal.svg"
+                    alt="University of Santo Tomas logo"
+                >
+
+            </div>
+
+            <div class="college-info">
+
+                <h3>
+                    University of Santo Tomas
+                </h3>
+
+                <p class="location">
+                    📍 Manila, Metro Manila
+                </p>
+
+                <a
+                    class="website-link"
+                    href="https://www.ust.edu.ph/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    Official Website ↗
+                </a>
+
+            </div>
+
+        </article>
+
+    </div>
+
+
+    <!-- NO RESULTS -->
+
+    <div
+        class="no-results"
+        id="noResults"
+    >
+
+        <h3>No colleges found</h3>
+
+        <p>
+            Try searching for a different college or university.
+        </p>
+
+    </div>
+
 </div>
 
-<!-- Header Banner (Puti na at malinis) -->
-<header class="explore-header">
-  <div class="explore-header-inner">
-    <h1>Explore colleges</h1>
-    <div class="explore-search-row">
-      <div class="explore-search-input-wrap">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
-        <input type="text" id="searchInput" class="explore-search-input" placeholder="Search unibersidad by name..." />
-      </div>
-      <button class="explore-search-btn">Search</button>
-    </div>
-  </div>
-</header>
 
-<!-- College Cards Grid Section -->
-<main class="container" style="max-width: 1100px; margin: 0 auto; padding: 30px 20px 60px 20px;">
-  <div style="font-size: 0.9rem; font-weight: 700; color: #334155; margin-bottom: 20px;">Showing top Philippine Universities</div>
-  
-  <div class="uni-grid">
-    <!-- UP -->
-    <a href="https://www.up.edu.ph" target="_blank" class="uni-card">
-      <img src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=600&q=80" alt="UP" class="uni-card-img" />
-      <div class="uni-card-body">
-        <div class="uni-card-title">University of the Philippines</div>
-        <div class="uni-card-location">Diliman, Quezon City</div>
-        <div class="uni-card-action">Visit Official Website →</div>
-      </div>
-    </a>
-
-    <!-- DLSU -->
-    <a href="https://www.dlsu.edu.ph" target="_blank" class="uni-card">
-      <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=600&q=80" alt="DLSU" class="uni-card-img" />
-      <div class="uni-card-body">
-        <div class="uni-card-title">De La Salle University</div>
-        <div class="uni-card-location">Malate, Manila</div>
-        <div class="uni-card-action">Visit Official Website →</div>
-      </div>
-    </a>
-
-    <!-- UST -->
-    <a href="https://www.ust.edu.ph" target="_blank" class="uni-card">
-      <img src="https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=600&q=80" alt="UST" class="uni-card-img" />
-      <div class="uni-card-body">
-        <div class="uni-card-title">University of Santo Tomas</div>
-        <div class="uni-card-location">Sampaloc, Manila</div>
-        <div class="uni-card-action">Visit Official Website →</div>
-      </div>
-    </a>
-
-    <!-- Ateneo -->
-    <a href="https://www.ateneo.edu" target="_blank" class="uni-card">
-      <img src="https://images.unsplash.com/photo-14982436915f1-b48eb9bb14d3?auto=format&fit=crop&w=600&q=80" alt="Ateneo" class="uni-card-img" />
-      <div class="uni-card-body">
-        <div class="uni-card-title">Ateneo de Manila University</div>
-        <div class="uni-card-location">Katipunan, Quezon City</div>
-        <div class="uni-card-action">Visit Official Website →</div>
-      </div>
-    </a>
-  </div>
-</main>
-
-<!-- Menu Script -->
 <script>
-  const menuToggle = document.getElementById("menuToggle");
-  const mobileMenu = document.getElementById("mobileMenu");
-  const menuClose = document.getElementById("menuClose");
 
-  if (menuToggle && mobileMenu) {
-    menuToggle.addEventListener("click", () => mobileMenu.classList.add("open"));
-    menuClose.addEventListener("click", () => mobileMenu.classList.remove("open"));
-  }
+    const searchInput =
+        document.getElementById("collegeSearch");
+
+    const cards =
+        document.querySelectorAll(".college-card");
+
+    const filterButtons =
+        document.querySelectorAll(".filter-btn");
+
+    const resultCount =
+        document.getElementById("resultCount");
+
+    const noResults =
+        document.getElementById("noResults");
+
+
+    let selectedRegion = "all";
+
+
+    function updateCollegeList() {
+
+        const searchTerm =
+            searchInput.value
+                .toLowerCase()
+                .trim();
+
+        let visible = 0;
+
+
+        cards.forEach(card => {
+
+            const name =
+                card.dataset.name.toLowerCase();
+
+            const region =
+                card.dataset.region;
+
+
+            const matchesSearch =
+                name.includes(searchTerm);
+
+            const matchesRegion =
+                selectedRegion === "all" ||
+                region === selectedRegion;
+
+
+            if (
+                matchesSearch &&
+                matchesRegion
+            ) {
+
+                card.style.display = "flex";
+
+                visible++;
+
+            } else {
+
+                card.style.display = "none";
+
+            }
+
+        });
+
+
+        resultCount.textContent =
+            `${visible} ${visible === 1 ? "college" : "colleges"}`;
+
+
+        noResults.style.display =
+            visible === 0
+                ? "block"
+                : "none";
+
+    }
+
+
+    /* SEARCH */
+
+    searchInput.addEventListener(
+        "input",
+        updateCollegeList
+    );
+
+
+    /* FILTER */
+
+    filterButtons.forEach(button => {
+
+        button.addEventListener(
+            "click",
+            () => {
+
+                filterButtons.forEach(btn => {
+                    btn.classList.remove("active");
+                });
+
+
+                button.classList.add("active");
+
+
+                selectedRegion =
+                    button.dataset.region;
+
+
+                updateCollegeList();
+
+            }
+        );
+
+    });
+
+
+    /* INITIAL */
+
+    updateCollegeList();
+
 </script>
 
 </body>
