@@ -1,686 +1,119 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<header class="site-header">
 
-    <title>Find a College</title>
+    <div class="header-inner">
 
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-            background: #f7f8fa;
-            color: #202631;
-        }
-
-        .page {
-            max-width: 1120px;
-            margin: 0 auto;
-            padding: 38px 24px 60px;
-        }
-
-        /* PAGE HEADER */
-
-        .page-header {
-            margin-bottom: 26px;
-        }
-
-        .page-header h1 {
-            font-size: 30px;
-            font-weight: 700;
-            letter-spacing: -0.4px;
-            margin-bottom: 7px;
-        }
-
-        .page-header p {
-            color: #707887;
-            font-size: 15px;
-            line-height: 1.5;
-        }
-
-        /* SEARCH */
-
-        .search-container {
-            position: relative;
-            margin-bottom: 18px;
-        }
-
-        .search-container input {
-            width: 100%;
-            height: 52px;
-            border: 1px solid #d9dee6;
-            border-radius: 7px;
-            background: #ffffff;
-            padding: 0 18px 0 47px;
-            outline: none;
-            font-size: 15px;
-            color: #252b35;
-        }
-
-        .search-container input:focus {
-            border-color: #315dcc;
-            box-shadow: 0 0 0 3px rgba(49, 93, 204, 0.08);
-        }
-
-        .search-icon {
-            position: absolute;
-            left: 17px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #727b89;
-            font-size: 19px;
-            pointer-events: none;
-        }
-
-        /* FILTERS */
-
-        .filters {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 30px;
-            overflow-x: auto;
-            padding-bottom: 3px;
-        }
-
-        .filter-btn {
-            border: 1px solid #d9dee6;
-            background: #ffffff;
-            color: #596273;
-            border-radius: 6px;
-            padding: 9px 16px;
-            font-size: 14px;
-            cursor: pointer;
-            white-space: nowrap;
-        }
-
-        .filter-btn:hover {
-            border-color: #315dcc;
-            color: #315dcc;
-        }
-
-        .filter-btn.active {
-            background: #315dcc;
-            border-color: #315dcc;
-            color: #ffffff;
-        }
-
-        /* SECTION */
-
-        .section-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 14px;
-        }
-
-        .section-header h2 {
-            font-size: 19px;
-            font-weight: 700;
-        }
-
-        .result-count {
-            font-size: 13px;
-            color: #7a8290;
-        }
-
-        /* COLLEGE GRID */
-
-        .college-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 14px;
-        }
-
-        /* COLLEGE CARD */
-
-        .college-card {
-            display: flex;
-            gap: 18px;
-            min-height: 160px;
-            padding: 20px;
-            background: #ffffff;
-            border: 1px solid #e0e4ea;
-            border-radius: 8px;
-            transition: border-color 0.18s ease,
-                        box-shadow 0.18s ease;
-        }
-
-        .college-card:hover {
-            border-color: #c1c9d6;
-            box-shadow: 0 5px 16px rgba(20, 30, 50, 0.05);
-        }
-
-        /* LOGO */
-
-        .college-logo {
-            width: 78px;
-            height: 78px;
-            flex: 0 0 78px;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            border: 1px solid #e3e6eb;
-            border-radius: 6px;
-            background: #ffffff;
-
-            overflow: hidden;
-        }
-
-        .college-logo img {
-            width: 62px;
-            height: 62px;
-            object-fit: contain;
-        }
-
-        /* INFORMATION */
-
-        .college-info {
-            min-width: 0;
-            flex: 1;
-        }
-
-        .college-info h3 {
-            font-size: 17px;
-            font-weight: 700;
-            line-height: 1.35;
-            margin-bottom: 7px;
-        }
-
-        .location {
-            color: #737c8b;
-            font-size: 14px;
-            line-height: 1.4;
-            margin-bottom: 17px;
-        }
-
-        .website-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-
-            color: #315dcc;
-            text-decoration: none;
-
-            font-size: 14px;
-            font-weight: 600;
-        }
-
-        .website-link:hover {
-            text-decoration: underline;
-        }
-
-        /* NO RESULTS */
-
-        .no-results {
-            display: none;
-            text-align: center;
-            background: #ffffff;
-            border: 1px solid #e0e4ea;
-            border-radius: 8px;
-            padding: 45px 20px;
-        }
-
-        .no-results h3 {
-            font-size: 17px;
-            margin-bottom: 6px;
-        }
-
-        .no-results p {
-            color: #7a8290;
-            font-size: 14px;
-        }
-
-        /* MOBILE */
-
-        @media (max-width: 760px) {
-
-            .page {
-                padding: 28px 16px 45px;
-            }
-
-            .college-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .page-header h1 {
-                font-size: 27px;
-            }
-        }
-
-        @media (max-width: 450px) {
-
-            .college-card {
-                padding: 16px;
-                gap: 13px;
-            }
-
-            .college-logo {
-                width: 65px;
-                height: 65px;
-                flex-basis: 65px;
-            }
-
-            .college-logo img {
-                width: 52px;
-                height: 52px;
-            }
-
-            .college-info h3 {
-                font-size: 15px;
-            }
-
-            .location,
-            .website-link {
-                font-size: 13px;
-            }
-        }
-    </style>
-</head>
-
-<body>
-
-<div class="page">
-
-    <div class="page-header">
-        <h1>Find a College</h1>
-
-        <p>
-            Search for colleges and universities and visit their
-            official websites to learn more about admissions.
-        </p>
-    </div>
-
-
-    <!-- SEARCH -->
-
-    <div class="search-container">
-
-        <span class="search-icon">⌕</span>
-
-        <input
-            type="search"
-            id="collegeSearch"
-            placeholder="Search colleges or universities..."
-            autocomplete="off"
+        <a
+            href="Index.html"
+            class="brand"
         >
+            WebEnnroll
+        </a>
+
+
+        <nav class="desktop-nav">
+
+            <a href="Index.html">
+                Home
+            </a>
+
+            <a href="colleges.html">
+                Find Colleges
+            </a>
+
+            <a href="Index.html#how-it-works">
+                How It Works
+            </a>
+
+            <a href="Index.html#features">
+                Features
+            </a>
+
+        </nav>
+
+
+        <div class="header-actions">
+
+            <a
+                href="login.html"
+                class="login-link"
+            >
+                Sign In
+            </a>
+
+            <a
+                href="signup.html"
+                class="primary-button small"
+            >
+                Get Started
+            </a>
+
+        </div>
+
+
+        <button
+            class="menu-button"
+            id="menuButton"
+            type="button"
+            aria-label="Open menu"
+            aria-expanded="false"
+        >
+            ☰
+        </button>
 
     </div>
 
+</header>
 
-    <!-- FILTERS -->
 
-    <div class="filters">
+<aside
+    class="mobile-menu"
+    id="mobileMenu"
+    aria-hidden="true"
+>
 
-        <button
-            class="filter-btn active"
-            data-region="all"
-        >
-            All
-        </button>
-
-        <button
-            class="filter-btn"
-            data-region="NCR"
-        >
-            NCR
-        </button>
+    <div class="mobile-menu-header">
 
         <button
-            class="filter-btn"
-            data-region="Luzon"
+            class="close-button"
+            id="closeButton"
+            type="button"
+            aria-label="Close menu"
         >
-            Luzon
-        </button>
-
-        <button
-            class="filter-btn"
-            data-region="Visayas"
-        >
-            Visayas
-        </button>
-
-        <button
-            class="filter-btn"
-            data-region="Mindanao"
-        >
-            Mindanao
+            ×
         </button>
 
     </div>
 
 
-    <!-- COLLEGES -->
+    <nav class="mobile-nav">
 
-    <div class="section-header">
+        <a href="Index.html">
+            Home
+        </a>
 
-        <h2>Colleges & Universities</h2>
+        <a href="colleges.html">
+            Find Colleges
+        </a>
 
-        <span
-            class="result-count"
-            id="resultCount"
+        <a href="Index.html#how-it-works">
+            How It Works
+        </a>
+
+        <a href="Index.html#features">
+            Features
+        </a>
+
+        <a href="login.html">
+            Sign In
+        </a>
+
+        <a
+            href="signup.html"
+            class="mobile-cta"
         >
-            0 colleges
-        </span>
+            Create Account
+        </a>
 
-    </div>
+    </nav>
 
-
-    <div
-        class="college-grid"
-        id="collegeGrid"
-    >
-
-        <!-- UP DILIMAN -->
-
-        <article
-            class="college-card"
-            data-region="NCR"
-            data-name="University of the Philippines Diliman"
-        >
-
-            <div class="college-logo">
-
-                <img
-                    src="https://upload.wikimedia.org/wikipedia/en/6/6c/University_of_the_Philippines_seal.svg"
-                    alt="University of the Philippines Diliman logo"
-                >
-
-            </div>
-
-            <div class="college-info">
-
-                <h3>
-                    University of the Philippines Diliman
-                </h3>
-
-                <p class="location">
-                    📍 Quezon City, Metro Manila
-                </p>
-
-                <a
-                    class="website-link"
-                    href="https://upd.edu.ph/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    Official Website ↗
-                </a>
-
-            </div>
-
-        </article>
-
-
-        <!-- ATENEO -->
-
-        <article
-            class="college-card"
-            data-region="NCR"
-            data-name="Ateneo de Manila University"
-        >
-
-            <div class="college-logo">
-
-                <img
-                    src="https://upload.wikimedia.org/wikipedia/en/3/3b/Ateneo_de_Manila_University_seal.svg"
-                    alt="Ateneo de Manila University logo"
-                >
-
-            </div>
-
-            <div class="college-info">
-
-                <h3>
-                    Ateneo de Manila University
-                </h3>
-
-                <p class="location">
-                    📍 Quezon City, Metro Manila
-                </p>
-
-                <a
-                    class="website-link"
-                    href="https://www.ateneo.edu/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    Official Website ↗
-                </a>
-
-            </div>
-
-        </article>
-
-
-        <!-- DLSU -->
-
-        <article
-            class="college-card"
-            data-region="NCR"
-            data-name="De La Salle University"
-        >
-
-            <div class="college-logo">
-
-                <img
-                    src="https://upload.wikimedia.org/wikipedia/en/1/1b/De_La_Salle_University_Seal.svg"
-                    alt="De La Salle University logo"
-                >
-
-            </div>
-
-            <div class="college-info">
-
-                <h3>
-                    De La Salle University
-                </h3>
-
-                <p class="location">
-                    📍 Manila, Metro Manila
-                </p>
-
-                <a
-                    class="website-link"
-                    href="https://www.dlsu.edu.ph/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    Official Website ↗
-                </a>
-
-            </div>
-
-        </article>
-
-
-        <!-- UST -->
-
-        <article
-            class="college-card"
-            data-region="NCR"
-            data-name="University of Santo Tomas"
-        >
-
-            <div class="college-logo">
-
-                <img
-                    src="https://upload.wikimedia.org/wikipedia/en/5/5a/University_of_Santo_Tomas_Seal.svg"
-                    alt="University of Santo Tomas logo"
-                >
-
-            </div>
-
-            <div class="college-info">
-
-                <h3>
-                    University of Santo Tomas
-                </h3>
-
-                <p class="location">
-                    📍 Manila, Metro Manila
-                </p>
-
-                <a
-                    class="website-link"
-                    href="https://www.ust.edu.ph/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    Official Website ↗
-                </a>
-
-            </div>
-
-        </article>
-
-    </div>
-
-
-    <!-- NO RESULTS -->
-
-    <div
-        class="no-results"
-        id="noResults"
-    >
-
-        <h3>No colleges found</h3>
-
-        <p>
-            Try searching for a different college or university.
-        </p>
-
-    </div>
-
-</div>
-
-
-<script>
-
-    const searchInput =
-        document.getElementById("collegeSearch");
-
-    const cards =
-        document.querySelectorAll(".college-card");
-
-    const filterButtons =
-        document.querySelectorAll(".filter-btn");
-
-    const resultCount =
-        document.getElementById("resultCount");
-
-    const noResults =
-        document.getElementById("noResults");
-
-
-    let selectedRegion = "all";
-
-
-    function updateCollegeList() {
-
-        const searchTerm =
-            searchInput.value
-                .toLowerCase()
-                .trim();
-
-        let visible = 0;
-
-
-        cards.forEach(card => {
-
-            const name =
-                card.dataset.name.toLowerCase();
-
-            const region =
-                card.dataset.region;
-
-
-            const matchesSearch =
-                name.includes(searchTerm);
-
-            const matchesRegion =
-                selectedRegion === "all" ||
-                region === selectedRegion;
-
-
-            if (
-                matchesSearch &&
-                matchesRegion
-            ) {
-
-                card.style.display = "flex";
-
-                visible++;
-
-            } else {
-
-                card.style.display = "none";
-
-            }
-
-        });
-
-
-        resultCount.textContent =
-            `${visible} ${visible === 1 ? "college" : "colleges"}`;
-
-
-        noResults.style.display =
-            visible === 0
-                ? "block"
-                : "none";
-
-    }
-
-
-    /* SEARCH */
-
-    searchInput.addEventListener(
-        "input",
-        updateCollegeList
-    );
-
-
-    /* FILTER */
-
-    filterButtons.forEach(button => {
-
-        button.addEventListener(
-            "click",
-            () => {
-
-                filterButtons.forEach(btn => {
-                    btn.classList.remove("active");
-                });
-
-
-                button.classList.add("active");
-
-
-                selectedRegion =
-                    button.dataset.region;
-
-
-                updateCollegeList();
-
-            }
-        );
-
-    });
-
-
-    /* INITIAL */
-
-    updateCollegeList();
-
-</script>
-
-</body>
-</html>
+</aside>

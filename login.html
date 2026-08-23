@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Sign In | WebEnnroll</title>
+
+    <link
+        rel="stylesheet"
+        href="css/styles.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/auth.css"
+    >
+
+</head>
+
+
+<body class="auth-page">
+
+
+    <!-- HEADER -->
+
+    <header class="site-header">
+
+        <div class="header-inner">
+
+            <a
+                href="Index.html"
+                class="brand"
+            >
+                WebEnnroll
+            </a>
+
+            <a
+                href="Index.html"
+                class="auth-back"
+            >
+                ← Back to home
+            </a>
+
+        </div>
+
+    </header>
+
+
+    <!-- LOGIN -->
+
+    <main class="auth-main">
+
+        <section class="auth-card">
+
+
+            <div class="auth-heading">
+
+                <span class="auth-eyebrow">
+                    WEBENNROLL ACCOUNT
+                </span>
+
+                <h1>
+                    Sign in
+                </h1>
+
+                <p>
+                    Sign in to continue managing
+                    your college application journey.
+                </p>
+
+            </div>
+
+
+            <!-- ERROR -->
+
+            <div
+                class="auth-message error-message"
+                id="loginError"
+                role="alert"
+                hidden
+            >
+                Invalid email or password.
+            </div>
+
+
+            <!-- FORM -->
+
+            <form
+                id="loginForm"
+                novalidate
+            >
+
+
+                <div class="form-group">
+
+                    <label for="email">
+                        Email address
+                    </label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="you@example.com"
+                        autocomplete="email"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <div class="password-label">
+
+                        <label for="password">
+                            Password
+                        </label>
+
+                        <a href="#forgot">
+                            Forgot password?
+                        </a>
+
+                    </div>
+
+
+                    <div class="password-input">
+
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="Enter your password"
+                            autocomplete="current-password"
+                            required
+                        >
+
+                        <button
+                            type="button"
+                            id="togglePassword"
+                            aria-label="Show password"
+                        >
+                            Show
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <div class="remember-row">
+
+                    <label>
+
+                        <input
+                            type="checkbox"
+                            id="remember"
+                            name="remember"
+                        >
+
+                        <span>
+                            Keep me signed in
+                        </span>
+
+                    </label>
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="auth-submit"
+                >
+                    Sign In
+                </button>
+
+
+            </form>
+
+
+            <!-- DIVIDER -->
+
+            <div class="auth-divider">
+
+                <span>
+                    OR
+                </span>
+
+            </div>
+
+
+            <!-- CREATE ACCOUNT -->
+
+            <a
+                href="signup.html"
+                class="auth-secondary"
+            >
+                Create an account
+            </a>
+
+
+            <p class="auth-footer-text">
+
+                By continuing, you agree to the
+                WebEnnroll terms and privacy policy.
+
+            </p>
+
+
+        </section>
+
+    </main>
+
+
+    <script src="js/auth.js"></script>
+
+</body>
+
+</html>
