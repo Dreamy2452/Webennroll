@@ -1,119 +1,1001 @@
-<header class="site-header">
+<!DOCTYPE html>
+<html lang="en">
 
-    <div class="header-inner">
+<head>
 
-        <a
-            href="Index.html"
-            class="brand"
-        >
-            WebEnnroll
-        </a>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Find a College</title>
+
+    <link
+        rel="stylesheet"
+        href="css/styles.css"
+    >
+
+    <style>
+
+        /* =========================================
+           COLLEGES PAGE
+        ========================================= */
+
+        .colleges-page {
+            min-height: 100vh;
+            background: #f8f9fb;
+        }
 
 
-        <nav class="desktop-nav">
+        /* =========================================
+           PAGE HERO
+        ========================================= */
+
+        .colleges-hero {
+            background: #ffffff;
+            border-bottom: 1px solid #e5e8ec;
+        }
+
+        .colleges-hero-inner {
+            width: min(1180px, calc(100% - 40px));
+
+            margin: 0 auto;
+
+            padding: 65px 0 55px;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+
+            gap: 7px;
+
+            margin-bottom: 25px;
+
+            color: #626b77;
+
+            text-decoration: none;
+
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .back-link:hover {
+            color: #1f56c5;
+        }
+
+        .colleges-hero h1 {
+            margin: 0 0 12px;
+
+            color: #20252d;
+
+            font-size: clamp(34px, 5vw, 52px);
+
+            line-height: 1.08;
+
+            letter-spacing: -1.5px;
+        }
+
+        .colleges-hero p {
+            max-width: 650px;
+
+            margin: 0;
+
+            color: #6c7581;
+
+            font-size: 16px;
+
+            line-height: 1.7;
+        }
+
+
+        /* =========================================
+           SEARCH
+        ========================================= */
+
+        .college-tools {
+            width: min(1180px, calc(100% - 40px));
+
+            margin: 0 auto;
+
+            padding: 28px 0 10px;
+        }
+
+        .search-box {
+            width: 100%;
+
+            display: flex;
+            align-items: center;
+
+            background: #ffffff;
+
+            border: 1px solid #dce1e7;
+
+            border-radius: 7px;
+
+            overflow: hidden;
+        }
+
+        .search-icon {
+            padding-left: 17px;
+
+            color: #7b838d;
+
+            font-size: 18px;
+        }
+
+        .search-box input {
+            width: 100%;
+
+            height: 52px;
+
+            padding: 0 16px;
+
+            border: 0;
+
+            outline: 0;
+
+            background: transparent;
+
+            color: #20252d;
+
+            font-size: 14px;
+        }
+
+        .search-box:focus-within {
+            border-color: #1f56c5;
+
+            box-shadow:
+                0 0 0 3px rgba(31, 86, 197, 0.08);
+        }
+
+
+        /* =========================================
+           COLLEGE GRID
+        ========================================= */
+
+        .college-list {
+            width: min(1180px, calc(100% - 40px));
+
+            margin: 0 auto;
+
+            padding: 20px 0 80px;
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 18px;
+        }
+
+
+        /* =========================================
+           COLLEGE CARD
+        ========================================= */
+
+        .college-card {
+            display: flex;
+
+            flex-direction: column;
+
+            min-width: 0;
+
+            background: #ffffff;
+
+            border: 1px solid #dfe3e8;
+
+            border-radius: 9px;
+
+            overflow: hidden;
+
+            transition:
+                border-color 0.18s ease,
+                box-shadow 0.18s ease,
+                transform 0.18s ease;
+        }
+
+        .college-card:hover {
+            border-color: #c7d1df;
+
+            box-shadow:
+                0 10px 25px rgba(24, 37, 54, 0.07);
+
+            transform: translateY(-2px);
+        }
+
+
+        /* =========================================
+           COLLEGE IMAGE
+        ========================================= */
+
+        .college-image {
+            width: 100%;
+
+            height: 180px;
+
+            object-fit: cover;
+
+            display: block;
+
+            background: #edf0f4;
+        }
+
+
+        /* =========================================
+           CONTENT
+        ========================================= */
+
+        .college-content {
+            flex: 1;
+
+            padding: 21px;
+        }
+
+        .college-location {
+            display: block;
+
+            margin-bottom: 8px;
+
+            color: #1f56c5;
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+            letter-spacing: 0.4px;
+
+            text-transform: uppercase;
+        }
+
+        .college-content h2 {
+            margin: 0 0 8px;
+
+            color: #20252d;
+
+            font-size: 18px;
+
+            line-height: 1.3;
+        }
+
+        .college-content p {
+            margin: 0;
+
+            color: #737c87;
+
+            font-size: 13px;
+
+            line-height: 1.55;
+        }
+
+
+        /* =========================================
+           ACTION BUTTON
+        ========================================= */
+
+        .college-action {
+            padding: 0 21px 21px;
+        }
+
+        .official-link {
+            width: 100%;
+
+            min-height: 43px;
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border: 1px solid #1f56c5;
+
+            border-radius: 6px;
+
+            background: #ffffff;
+
+            color: #1f56c5;
+
+            text-decoration: none;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            transition:
+                background 0.15s ease,
+                color 0.15s ease;
+        }
+
+        .official-link:hover {
+            background: #1f56c5;
+
+            color: #ffffff;
+        }
+
+
+        /* =========================================
+           NO RESULTS
+        ========================================= */
+
+        .no-results {
+            width: min(1180px, calc(100% - 40px));
+
+            margin: 0 auto;
+
+            padding: 25px 0 80px;
+
+            color: #737c87;
+
+            text-align: center;
+
+            font-size: 14px;
+        }
+
+
+        /* =========================================
+           RESPONSIVE
+        ========================================= */
+
+        @media (max-width: 900px) {
+
+            .college-list {
+                grid-template-columns: 1fr 1fr;
+            }
+
+        }
+
+
+        @media (max-width: 620px) {
+
+            .colleges-hero-inner,
+            .college-tools,
+            .college-list,
+            .no-results {
+
+                width: calc(100% - 32px);
+
+            }
+
+            .colleges-hero-inner {
+
+                padding: 45px 0 40px;
+
+            }
+
+            .colleges-hero h1 {
+
+                font-size: 36px;
+
+            }
+
+            .college-list {
+
+                grid-template-columns: 1fr;
+
+                padding-bottom: 60px;
+
+            }
+
+            .college-image {
+
+                height: 190px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================================
+         HEADER
+    ========================================= -->
+
+    <header class="site-header">
+
+        <div class="header-inner">
+
+
+            <!-- BRAND -->
+
+            <a
+                href="Index.html"
+                class="brand"
+            >
+                WebEnnroll
+            </a>
+
+
+            <!-- DESKTOP NAV -->
+
+            <nav class="desktop-nav">
+
+                <a href="Index.html">
+                    Home
+                </a>
+
+                <a href="colleges.html">
+                    Find Colleges
+                </a>
+
+                <a href="Index.html#how-it-works">
+                    How It Works
+                </a>
+
+                <a href="Index.html#features">
+                    Features
+                </a>
+
+            </nav>
+
+
+            <!-- DESKTOP ACTIONS -->
+
+            <div class="header-actions">
+
+                <a
+                    href="#login"
+                    class="login-link"
+                >
+                    Sign In
+                </a>
+
+                <a
+                    href="#get-started"
+                    class="primary-button small"
+                >
+                    Get Started
+                </a>
+
+            </div>
+
+
+            <!-- MOBILE MENU BUTTON -->
+
+            <button
+                class="menu-button"
+                id="menuButton"
+                type="button"
+                aria-label="Open menu"
+                aria-expanded="false"
+            >
+                ☰
+            </button>
+
+
+        </div>
+
+    </header>
+
+
+    <!-- =========================================
+         MOBILE MENU
+    ========================================= -->
+
+    <aside
+        class="mobile-menu"
+        id="mobileMenu"
+        aria-hidden="true"
+    >
+
+
+        <div class="mobile-menu-header">
+
+            <button
+                class="close-button"
+                id="closeButton"
+                type="button"
+                aria-label="Close menu"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <nav class="mobile-nav">
+
 
             <a href="Index.html">
                 Home
             </a>
 
+
             <a href="colleges.html">
                 Find Colleges
             </a>
+
 
             <a href="Index.html#how-it-works">
                 How It Works
             </a>
 
+
             <a href="Index.html#features">
                 Features
             </a>
 
-        </nav>
 
-
-        <div class="header-actions">
-
-            <a
-                href="login.html"
-                class="login-link"
-            >
+            <a href="#login">
                 Sign In
             </a>
 
+
             <a
-                href="signup.html"
-                class="primary-button small"
+                href="#get-started"
+                class="mobile-cta"
             >
                 Get Started
             </a>
 
-        </div>
+
+        </nav>
+
+    </aside>
 
 
-        <button
-            class="menu-button"
-            id="menuButton"
-            type="button"
-            aria-label="Open menu"
-            aria-expanded="false"
+    <!-- =========================================
+         MAIN
+    ========================================= -->
+
+    <main class="colleges-page">
+
+
+        <!-- HERO -->
+
+        <section class="colleges-hero">
+
+            <div class="colleges-hero-inner">
+
+
+                <a
+                    href="Index.html"
+                    class="back-link"
+                >
+                    ← Back to home
+                </a>
+
+
+                <h1>
+                    Find a college
+                </h1>
+
+
+                <p>
+                    Explore colleges and universities,
+                    compare your options, and visit
+                    each school's official website for
+                    admissions information.
+                </p>
+
+
+            </div>
+
+        </section>
+
+
+        <!-- SEARCH -->
+
+        <section class="college-tools">
+
+            <label
+                class="search-box"
+                for="collegeSearch"
+            >
+
+                <span
+                    class="search-icon"
+                    aria-hidden="true"
+                >
+                    ⌕
+                </span>
+
+
+                <input
+                    type="search"
+                    id="collegeSearch"
+                    placeholder="Search colleges or universities..."
+                    autocomplete="off"
+                >
+
+
+            </label>
+
+        </section>
+
+
+        <!-- =========================================
+             COLLEGE CARDS
+        ========================================= -->
+
+        <section
+            class="college-list"
+            id="collegeList"
         >
-            ☰
-        </button>
-
-    </div>
-
-</header>
 
 
-<aside
-    class="mobile-menu"
-    id="mobileMenu"
-    aria-hidden="true"
+            <!-- UNIVERSITY OF THE PHILIPPINES -->
+
+            <article
+                class="college-card"
+                data-name="University of the Philippines UP"
+            >
+
+                <img
+                    class="college-image"
+                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/UP_Diliman_Oblation.jpg/640px-UP_Diliman_Oblation.jpg"
+                    alt="University of the Philippines"
+                    loading="lazy"
+                >
+
+
+                <div class="college-content">
+
+                    <span class="college-location">
+                        Quezon City
+                    </span>
+
+
+                    <h2>
+                        University of the Philippines
+                    </h2>
+
+
+                    <p>
+                        A national university system
+                        with campuses and academic
+                        programs across the Philippines.
+                    </p>
+
+                </div>
+
+
+                <div class="college-action">
+
+                    <a
+                        class="official-link"
+                        href="https://up.edu.ph/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        Visit Official Website ↗
+                    </a>
+
+                </div>
+
+            </article>
+
+
+            <!-- ATENEO -->
+
+            <article
+                class="college-card"
+                data-name="Ateneo de Manila University ADMU"
+            >
+
+                <img
+                    class="college-image"
+                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/76/Ateneo_de_Manila_University_Bellarmine_Field.jpg/640px-Ateneo_de_Manila_University_Bellarmine_Field.jpg"
+                    alt="Ateneo de Manila University"
+                    loading="lazy"
+                >
+
+
+                <div class="college-content">
+
+                    <span class="college-location">
+                        Quezon City
+                    </span>
+
+
+                    <h2>
+                        Ateneo de Manila University
+                    </h2>
+
+
+                    <p>
+                        A private university offering
+                        undergraduate and graduate
+                        programs in many disciplines.
+                    </p>
+
+                </div>
+
+
+                <div class="college-action">
+
+                    <a
+                        class="official-link"
+                        href="https://www.ateneo.edu/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        Visit Official Website ↗
+                    </a>
+
+                </div>
+
+            </article>
+
+
+            <!-- DLSU -->
+
+            <article
+                class="college-card"
+                data-name="De La Salle University DLSU"
+            >
+
+                <img
+                    class="college-image"
+                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/De_La_Salle_University-Manila.jpg/640px-De_La_Salle_University-Manila.jpg"
+                    alt="De La Salle University"
+                    loading="lazy"
+                >
+
+
+                <div class="college-content">
+
+                    <span class="college-location">
+                        Manila
+                    </span>
+
+
+                    <h2>
+                        De La Salle University
+                    </h2>
+
+
+                    <p>
+                        A private research university
+                        offering programs in business,
+                        technology, engineering, and more.
+                    </p>
+
+                </div>
+
+
+                <div class="college-action">
+
+                    <a
+                        class="official-link"
+                        href="https://www.dlsu.edu.ph/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        Visit Official Website ↗
+                    </a>
+
+                </div>
+
+            </article>
+
+
+            <!-- UST -->
+
+            <article
+                class="college-card"
+                data-name="University of Santo Tomas UST"
+            >
+
+                <img
+                    class="college-image"
+                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/UST_Main_Building.jpg/640px-UST_Main_Building.jpg"
+                    alt="University of Santo Tomas"
+                    loading="lazy"
+                >
+
+
+                <div class="college-content">
+
+                    <span class="college-location">
+                        Manila
+                    </span>
+
+
+                    <h2>
+                        University of Santo Tomas
+                    </h2>
+
+
+                    <p>
+                        A university offering programs
+                        across health sciences, education,
+                        business, technology, and more.
+                    </p>
+
+                </div>
+
+
+                <div class="college-action">
+
+                    <a
+                        class="official-link"
+                        href="https://www.ust.edu.ph/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        Visit Official Website ↗
+                    </a>
+
+                </div>
+
+            </article>
+
+
+            <!-- MAPUA -->
+
+            <article
+                class="college-card"
+                data-name="Mapua University"
+            >
+
+                <img
+                    class="college-image"
+                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Mapua_University.jpg/640px-Mapua_University.jpg"
+                    alt="Mapua University"
+                    loading="lazy"
+                >
+
+
+                <div class="college-content">
+
+                    <span class="college-location">
+                        Manila
+                    </span>
+
+
+                    <h2>
+                        Mapúa University
+                    </h2>
+
+
+                    <p>
+                        A technology-focused university
+                        offering programs in engineering,
+                        computing, design, and related fields.
+                    </p>
+
+                </div>
+
+
+                <div class="college-action">
+
+                    <a
+                        class="official-link"
+                        href="https://www.mapua.edu.ph/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        Visit Official Website ↗
+                    </a>
+
+                </div>
+
+            </article>
+
+
+            <!-- PUP -->
+
+            <article
+                class="college-card"
+                data-name="Polytechnic University of the Philippines PUP"
+            >
+
+                <img
+                    class="college-image"
+                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/PUP_Main_Academic_Bldg.jpg/640px-PUP_Main_Academic_Bldg.jpg"
+                    alt="Polytechnic University of the Philippines"
+                    loading="lazy"
+                >
+
+
+                <div class="college-content">
+
+                    <span class="college-location">
+                        Manila
+                    </span>
+
+
+                    <h2>
+                        Polytechnic University of the Philippines
+                    </h2>
+
+
+                    <p>
+                        A public university with programs
+                        in business, technology, education,
+                        engineering, and other fields.
+                    </p>
+
+                </div>
+
+
+                <div class="college-action">
+
+                    <a
+                        class="official-link"
+                        href="https://www.pup.edu.ph/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        Visit Official Website ↗
+                    </a>
+
+                </div>
+
+            </article>
+
+
+        </section>
+
+
+        <!-- NO RESULTS -->
+<div 
+  class="no-results" 
+  id="noResults" 
+  hidden
 >
+  No colleges found matching your search.
+</div>
 
-    <div class="mobile-menu-header">
+</main>
 
-        <button
-            class="close-button"
-            id="closeButton"
-            type="button"
-            aria-label="Close menu"
-        >
-            ×
-        </button>
+<!-- ===================================================
+        FOOTER
+==================================================== -->
 
+<footer>
+  <div class="footer-inner">
+    <span class="footer-copy">
+      © 2026 WebEnnroll
+    </span>
+
+    <div class="footer-links">
+      <a href="#privacy">Privacy</a>
+      <a href="#help">Help</a>
     </div>
+  </div>
+</footer>
 
+<!-- ===================================================
+        JAVASCRIPT
+==================================================== -->
 
-    <nav class="mobile-nav">
+<script src="js/app.js"></script>
 
-        <a href="Index.html">
-            Home
-        </a>
+<script>
+  const searchInput = document.getElementById("collegeSearch");
+  const collegeList = document.getElementById("collegeList");
+  const noResults = document.getElementById("noResults");
+  const colleges = collegeList.querySelectorAll(".college-card");
 
-        <a href="colleges.html">
-            Find Colleges
-        </a>
+  searchInput.addEventListener("input", function () {
+    const search = this.value.trim().toLowerCase();
+    let visibleCount = 0;
 
-        <a href="Index.html#how-it-works">
-            How It Works
-        </a>
+    colleges.forEach(function (college) {
+      const name = college.dataset.name.toLowerCase();
+      const matches = name.includes(search);
 
-        <a href="Index.html#features">
-            Features
-        </a>
+      college.style.display = matches ? "" : "none";
 
-        <a href="login.html">
-            Sign In
-        </a>
+      if (matches) {
+        visibleCount++;
+      }
+    });
 
-        <a
-            href="signup.html"
-            class="mobile-cta"
-        >
-            Create Account
-        </a>
+    noResults.hidden = visibleCount !== 0;
+  });
+</script>
 
-    </nav>
+</body>
+</html>
 
-</aside>
