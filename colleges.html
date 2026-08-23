@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Explore colleges — UniApply PH</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css" />
+<style>
+  body {
+    background-color: #ffffff;
+    color: #0f172a;
+    font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+    margin: 0;
+  }
+  .explore-header {
+    background-color: #ffffff;
+    padding: 30px 20px 20px 20px;
+    border-bottom: 1px solid #e2e8f0;
+  }
+  .explore-header-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .explore-header h1 {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: #0f172a;
+    margin-bottom: 16px;
+    letter-spacing: -0.5px;
+  }
+  .explore-search-row {
+    display: flex;
+    gap: 12px;
+    max-width: 850px;
+  }
+  .explore-search-input-wrap {
+    flex: 1;
+    position: relative;
+    background: #f8fafc;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    padding: 0 14px;
+  }
+  .explore-search-input-wrap svg {
+    color: #64748b;
+    margin-right: 10px;
+    flex-shrink: 0;
+  }
+  .explore-search-input {
+    width: 100%;
+    border: none;
+    outline: none;
+    padding: 12px 0;
+    font-size: 1rem;
+    color: #0f172a;
+    background: transparent;
+  }
+  .explore-search-btn {
+    background-color: #0f172a;
+    color: #ffffff;
+    border: none;
+    padding: 0 24px;
+    font-weight: 700;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+  }
+  
+  /* College Cards Grid */
+  .uni-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 24px;
+    margin-top: 20px;
+  }
+  .uni-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.2s, box-shadow 0.2s;
+    display: flex;
+    flex-direction: column;
+  }
+  .uni-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+  }
+  .uni-card-img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    background-color: #e2e8f0;
+  }
+  .uni-card-body {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+  .uni-card-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 6px;
+  }
+  .uni-card-location {
+    font-size: 0.9rem;
+    color: #64748b;
+    margin-bottom: 12px;
+  }
+  .uni-card-action {
+    margin-top: auto;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #0284c7;
+  }
+</style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar" style="border-bottom: 1px solid #e2e8f0; background: #ffffff;">
+  <div class="navbar-inner" style="max-width: 1100px; margin: 0 auto; padding: 0 20px; display: flex; justify-content: space-between; align-items: center; height: 70px;">
+    <a href="index.html" class="brand" style="text-decoration: none; display: flex; align-items: center; gap: 10px;">
+      <div class="brand-mark" style="background:#0284c7; color:#fff; width:36px; height:36px; display:flex; align-items:center; justify-content:center; font-weight:bold; border-radius:8px;">UA</div>
+      <div class="brand-text" style="font-weight:bold; font-size:1.2rem; color:#0f172a;">UniApply <span style="color:#0284c7;">PH</span></div>
+    </a>
+    
+    <!-- Malinis na Menu Button -->
+    <button class="menu-toggle" id="menuToggle" aria-label="Open Menu" style="background: #f8fafc; border: 1px solid #cbd5e1; padding: 6px 14px; border-radius: 6px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; color: #0f172a;">
+      <span style="font-size: 1.1rem; line-height: 1;">☰</span> <span>Menu</span>
+    </button>
+  </div>
+</nav>
+
+<!-- Menu Drawer -->
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-header">
+    <div class="brand">
+      <div class="brand-mark">UA</div>
+      <div class="brand-text">UniApply <span>PH</span></div>
+    </div>
+    <button class="modal-close" id="menuClose">✕ Close</button>
+  </div>
+  <div class="mobile-menu-links">
+    <div class="menu-section-title">NAVIGATION</div>
+    <a href="index.html" class="mobile-link">Home</a>
+    <a href="colleges.html" class="mobile-link">Discover Colleges</a>
+  </div>
+</div>
+
+<!-- Header Banner (Puti na at malinis) -->
+<header class="explore-header">
+  <div class="explore-header-inner">
+    <h1>Explore colleges</h1>
+    <div class="explore-search-row">
+      <div class="explore-search-input-wrap">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+        <input type="text" id="searchInput" class="explore-search-input" placeholder="Search unibersidad by name..." />
+      </div>
+      <button class="explore-search-btn">Search</button>
+    </div>
+  </div>
+</header>
+
+<!-- College Cards Grid Section -->
+<main class="container" style="max-width: 1100px; margin: 0 auto; padding: 30px 20px 60px 20px;">
+  <div style="font-size: 0.9rem; font-weight: 700; color: #334155; margin-bottom: 20px;">Showing top Philippine Universities</div>
+  
+  <div class="uni-grid">
+    <!-- UP -->
+    <a href="https://www.up.edu.ph" target="_blank" class="uni-card">
+      <img src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=600&q=80" alt="UP" class="uni-card-img" />
+      <div class="uni-card-body">
+        <div class="uni-card-title">University of the Philippines</div>
+        <div class="uni-card-location">Diliman, Quezon City</div>
+        <div class="uni-card-action">Visit Official Website →</div>
+      </div>
+    </a>
+
+    <!-- DLSU -->
+    <a href="https://www.dlsu.edu.ph" target="_blank" class="uni-card">
+      <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=600&q=80" alt="DLSU" class="uni-card-img" />
+      <div class="uni-card-body">
+        <div class="uni-card-title">De La Salle University</div>
+        <div class="uni-card-location">Malate, Manila</div>
+        <div class="uni-card-action">Visit Official Website →</div>
+      </div>
+    </a>
+
+    <!-- UST -->
+    <a href="https://www.ust.edu.ph" target="_blank" class="uni-card">
+      <img src="https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=600&q=80" alt="UST" class="uni-card-img" />
+      <div class="uni-card-body">
+        <div class="uni-card-title">University of Santo Tomas</div>
+        <div class="uni-card-location">Sampaloc, Manila</div>
+        <div class="uni-card-action">Visit Official Website →</div>
+      </div>
+    </a>
+
+    <!-- Ateneo -->
+    <a href="https://www.ateneo.edu" target="_blank" class="uni-card">
+      <img src="https://images.unsplash.com/photo-14982436915f1-b48eb9bb14d3?auto=format&fit=crop&w=600&q=80" alt="Ateneo" class="uni-card-img" />
+      <div class="uni-card-body">
+        <div class="uni-card-title">Ateneo de Manila University</div>
+        <div class="uni-card-location">Katipunan, Quezon City</div>
+        <div class="uni-card-action">Visit Official Website →</div>
+      </div>
+    </a>
+  </div>
+</main>
+
+<!-- Menu Script -->
+<script>
+  const menuToggle = document.getElementById("menuToggle");
+  const mobileMenu = document.getElementById("mobileMenu");
+  const menuClose = document.getElementById("menuClose");
+
+  if (menuToggle && mobileMenu) {
+    menuToggle.addEventListener("click", () => mobileMenu.classList.add("open"));
+    menuClose.addEventListener("click", () => mobileMenu.classList.remove("open"));
+  }
+</script>
+
+</body>
+</html>

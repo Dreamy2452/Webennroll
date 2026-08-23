@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>UniApply PH — Unified College Application Portal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar">
+  <div class="navbar-inner">
+    <div class="brand" id="brandLogo">
+      <div class="brand-mark">UA</div>
+      <div class="brand-text">UniApply <span>PH</span></div>
+    </div>
+    
+    <!-- Bagong Menu Button na magkatabi at hindi maghihiwalay -->
+    <button class="menu-toggle" id="menuToggle" aria-label="Open Menu" style="background: #f8fafc; border: 1px solid #cbd5e1; padding: 12px 5px; border-radius: 6px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; color: #0f172a;">
+      <span style="font-size: 1.1rem; line-height: 1;">☰</span> <span>Menu</span>
+    </button>
+  </div>
+</nav>
+
+<!-- Menu Drawer (Dito na makikita ang ibang pages kapag binuksan) -->
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-header">
+    <div class="brand">
+      <div class="brand-mark">UA</div>
+      <div class="brand-text">UniApply <span>PH</span></div>
+    </div>
+    <button class="modal-close" id="menuClose">✕ Close</button>
+  </div>
+  <div class="mobile-menu-links">
+    <div class="menu-section-title">NAVIGATION</div>
+    <a href="index.html" class="mobile-link">Home</a>
+    <a href="colleges.html" class="mobile-link">Discover Colleges</a>
+    <a href="colleges.html#howitworks" class="mobile-link">How It Works</a>
+    <a href="colleges.html#feedback" class="mobile-link">Portal Feedback</a>
+    
+    <hr style="border:0; border-top:1px solid var(--border); margin:16px 0;">
+    
+    <div style="display:flex; gap:10px; flex-direction:column;">
+      <a href="colleges.html" class="btn btn-primary btn-block" style="text-align:center; text-decoration:none;">Start Your Application</a>
+    </div>
+  </div>
+</div>
+
+<!-- Purong Hero Section na lang ang natira sa Main Page -->
+<header class="hero" style="min-height: 85vh; display: flex; align-items: center; text-align: center;">
+  <div class="container" style="max-width: 800px;">
+    <div class="hero-badge" style="margin: 0 auto 16px auto;">🇵🇭 Built for Grade 12 Graduates</div>
+    <h1 style="font-size: 3.5rem; font-weight: 800; line-height: 1.15; margin-bottom: 24px;">College is<br>for anyone</h1>
+    <p style="font-size: 1.15rem; color: var(--text-muted); margin-bottom: 36px; line-height: 1.6;">
+      Apply to college for the first time or transfer to complete your degree. UniApply helps you discover colleges, submit applications, and navigate every step of the college admissions process seamlessly.
+    </p>
+
+    <div>
+      <a href="colleges.html" class="btn btn-primary" style="padding: 14px 32px; font-size: 1.1rem; border-radius: 30px; text-decoration: none; display: inline-block;">Start your application</a>
+    </div>
+
+    <div class="hero-stats" style="margin-top: 50px; justify-content: center;">
+      <div class="hero-stat"><b>4</b><span>PH Regions</span></div>
+      <div class="hero-stat"><b>100%</b><span>Online Tracking</span></div>
+      <div class="hero-stat"><b>1</b><span>Master Profile</span></div>
+    </div>
+  </div>
+</header>
+
+<footer class="footer" style="text-align: center; padding: 30px 0;">
+  <div class="container">
+    <p>UniApply PH — centralized college application portal for Philippine high school graduates.</p>
+  </div>
+</footer>
+
+<!-- Menu Script -->
+<script>
+  const menuToggle = document.getElementById("menuToggle");
+  const mobileMenu = document.getElementById("mobileMenu");
+  const menuClose = document.getElementById("menuClose");
+
+  if (menuToggle && mobileMenu) {
+    menuToggle.addEventListener("click", () => mobileMenu.classList.add("open"));
+    menuClose.addEventListener("click", () => mobileMenu.classList.remove("open"));
+  }
+</script>
+
+</body>
+</html>
