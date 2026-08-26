@@ -2,36 +2,16 @@
 <html lang="en">
 
 <head>
-
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
-    <title>Find a College</title>
-
-    <link
-        rel="stylesheet"
-        href="css/styles.css"
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Colleges | WebEnroll</title>
+    <link rel="stylesheet" href="css/styles.css">
 
     <style>
-
-        /* =========================================
-           COLLEGES PAGE
-        ========================================= */
-
         .colleges-page {
             min-height: 100vh;
             background: #f8f9fb;
         }
-
-
-        /* =========================================
-           PAGE HERO
-        ========================================= */
 
         .colleges-hero {
             background: #ffffff;
@@ -40,962 +20,594 @@
 
         .colleges-hero-inner {
             width: min(1180px, calc(100% - 40px));
-
             margin: 0 auto;
-
-            padding: 65px 0 55px;
+            padding: 40px 0 30px;
         }
 
         .back-link {
             display: inline-flex;
             align-items: center;
-
             gap: 7px;
-
-            margin-bottom: 25px;
-
+            margin-bottom: 15px;
             color: #626b77;
-
             text-decoration: none;
-
             font-size: 13px;
             font-weight: 600;
         }
 
-        .back-link:hover {
-            color: #1f56c5;
-        }
-
         .colleges-hero h1 {
-            margin: 0 0 12px;
-
+            margin: 0 0 8px;
             color: #20252d;
-
-            font-size: clamp(34px, 5vw, 52px);
-
-            line-height: 1.08;
-
-            letter-spacing: -1.5px;
+            font-size: clamp(28px, 4vw, 40px);
+            letter-spacing: -0.5px;
         }
 
         .colleges-hero p {
             max-width: 650px;
-
             margin: 0;
-
             color: #6c7581;
-
-            font-size: 16px;
-
-            line-height: 1.7;
+            font-size: 15px;
+            line-height: 1.5;
         }
 
-
-        /* =========================================
-           SEARCH
-        ========================================= */
-
-        .college-tools {
+        /* SECTION HEADERS */
+        .section-wrapper {
             width: min(1180px, calc(100% - 40px));
-
             margin: 0 auto;
+            padding-top: 30px;
+        }
 
-            padding: 28px 0 10px;
+        .section-title {
+            font-size: 20px;
+            color: #1e293b;
+            margin: 0 0 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-subtitle {
+            font-size: 13px;
+            color: #64748b;
+            margin: 0 0 16px;
+        }
+
+        .badge-rec {
+            background: #dbeafe;
+            color: #1d4ed8;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 20px;
+            text-transform: uppercase;
+        }
+
+        /* SEARCH & FILTERS */
+        .search-tools {
+            width: min(1180px, calc(100% - 40px));
+            margin: 0 auto;
+            padding: 20px 0 10px;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
         }
 
         .search-box {
-            width: 100%;
-
+            flex: 2;
+            min-width: 260px;
             display: flex;
             align-items: center;
-
             background: #ffffff;
-
             border: 1px solid #dce1e7;
-
             border-radius: 7px;
-
-            overflow: hidden;
-        }
-
-        .search-icon {
-            padding-left: 17px;
-
-            color: #7b838d;
-
-            font-size: 18px;
+            padding: 0 14px;
         }
 
         .search-box input {
             width: 100%;
-
-            height: 52px;
-
-            padding: 0 16px;
-
+            height: 44px;
             border: 0;
-
             outline: 0;
-
             background: transparent;
-
-            color: #20252d;
-
             font-size: 14px;
         }
 
-        .search-box:focus-within {
-            border-color: #1f56c5;
-
-            box-shadow:
-                0 0 0 3px rgba(31, 86, 197, 0.08);
+        .filter-dropdown {
+            flex: 1;
+            min-width: 160px;
+            height: 46px;
+            padding: 0 12px;
+            border: 1px solid #dce1e7;
+            border-radius: 7px;
+            background: #ffffff;
+            font-size: 14px;
+            color: #20252d;
+            outline: none;
         }
 
-
-        /* =========================================
-           COLLEGE GRID
-        ========================================= */
-
-        .college-list {
-            width: min(1180px, calc(100% - 40px));
-
-            margin: 0 auto;
-
-            padding: 20px 0 80px;
-
+        /* CARDS GRID */
+        .college-grid {
             display: grid;
-
-            grid-template-columns:
-                repeat(3, 1fr);
-
-            gap: 18px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            padding-bottom: 20px;
         }
-
-
-        /* =========================================
-           COLLEGE CARD
-        ========================================= */
 
         .college-card {
-            display: flex;
-
-            flex-direction: column;
-
-            min-width: 0;
-
             background: #ffffff;
-
             border: 1px solid #dfe3e8;
-
             border-radius: 9px;
-
             overflow: hidden;
-
-            transition:
-                border-color 0.18s ease,
-                box-shadow 0.18s ease,
-                transform 0.18s ease;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.18s, box-shadow 0.18s;
         }
 
         .college-card:hover {
-            border-color: #c7d1df;
-
-            box-shadow:
-                0 10px 25px rgba(24, 37, 54, 0.07);
-
+            box-shadow: 0 8px 20px rgba(24, 37, 54, 0.08);
             transform: translateY(-2px);
         }
 
-
-        /* =========================================
-           COLLEGE IMAGE
-        ========================================= */
+        .college-img-wrap {
+            width: 100%;
+            height: 160px;
+            background: #e2e8f0;
+            overflow: hidden;
+            position: relative;
+        }
 
         .college-image {
             width: 100%;
-
-            height: 180px;
-
+            height: 100%;
             object-fit: cover;
-
             display: block;
-
-            background: #edf0f4;
         }
-
-
-        /* =========================================
-           CONTENT
-        ========================================= */
 
         .college-content {
             flex: 1;
-
-            padding: 21px;
+            padding: 16px;
         }
 
-        .college-location {
-            display: block;
-
+        .badge-container {
+            display: flex;
+            gap: 6px;
             margin-bottom: 8px;
+            flex-wrap: wrap;
+        }
 
+        .badge-location {
+            background: #eef2ff;
             color: #1f56c5;
-
             font-size: 11px;
-
             font-weight: 700;
-
-            letter-spacing: 0.4px;
-
+            padding: 3px 8px;
+            border-radius: 4px;
             text-transform: uppercase;
         }
 
-        .college-content h2 {
-            margin: 0 0 8px;
+        .badge-strand {
+            background: #f1f5f9;
+            color: #475569;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 3px 8px;
+            border-radius: 4px;
+        }
 
-            color: #20252d;
-
-            font-size: 18px;
-
-            line-height: 1.3;
+        .college-content h3 {
+            margin: 0 0 6px;
+            font-size: 16px;
+            color: #1e293b;
         }
 
         .college-content p {
             margin: 0;
-
-            color: #737c87;
-
-            font-size: 13px;
-
-            line-height: 1.55;
+            font-size: 12.5px;
+            color: #64748b;
+            line-height: 1.45;
         }
 
-
-        /* =========================================
-           ACTION BUTTON
-        ========================================= */
-
         .college-action {
-            padding: 0 21px 21px;
+            padding: 0 16px 16px;
+            display: flex;
+            gap: 8px;
         }
 
         .official-link {
-            width: 100%;
-
-            min-height: 43px;
-
+            flex: 1;
+            height: 38px;
             display: inline-flex;
-
             align-items: center;
-
             justify-content: center;
-
             border: 1px solid #1f56c5;
-
             border-radius: 6px;
-
             background: #ffffff;
-
             color: #1f56c5;
-
             text-decoration: none;
-
-            font-size: 13px;
-
+            font-size: 12px;
             font-weight: 700;
-
-            transition:
-                background 0.15s ease,
-                color 0.15s ease;
+            transition: all 0.15s;
         }
 
         .official-link:hover {
             background: #1f56c5;
-
             color: #ffffff;
         }
 
+        .save-card-btn {
+            height: 38px;
+            padding: 0 12px;
+            border: 1px solid #dce1e7;
+            border-radius: 6px;
+            background: #f8fafc;
+            color: #475569;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+        }
 
-        /* =========================================
-           NO RESULTS
-        ========================================= */
+        .save-card-btn.saved {
+            background: #16a34a;
+            color: #ffffff;
+            border-color: #16a34a;
+        }
 
         .no-results {
-            width: min(1180px, calc(100% - 40px));
-
-            margin: 0 auto;
-
-            padding: 25px 0 80px;
-
-            color: #737c87;
-
+            padding: 30px 0 60px;
             text-align: center;
-
+            color: #64748b;
             font-size: 14px;
         }
 
-
-        /* =========================================
-           RESPONSIVE
-        ========================================= */
-
+        /* MOBILE MENU STYLES */
         @media (max-width: 900px) {
-
-            .college-list {
-                grid-template-columns: 1fr 1fr;
-            }
-
+            .college-grid { grid-template-columns: 1fr 1fr; }
         }
 
+        @media (max-width: 768px) {
+            .desktop-nav {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 60px;
+                left: 0;
+                width: 100%;
+                background: #ffffff;
+                padding: 15px 20px;
+                box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+                border-bottom: 1px solid #e5e8ec;
+                z-index: 100;
+            }
+
+            .desktop-nav.active {
+                display: flex;
+            }
+        }
 
         @media (max-width: 620px) {
-
-            .colleges-hero-inner,
-            .college-tools,
-            .college-list,
-            .no-results {
-
-                width: calc(100% - 32px);
-
-            }
-
-            .colleges-hero-inner {
-
-                padding: 45px 0 40px;
-
-            }
-
-            .colleges-hero h1 {
-
-                font-size: 36px;
-
-            }
-
-            .college-list {
-
-                grid-template-columns: 1fr;
-
-                padding-bottom: 60px;
-
-            }
-
-            .college-image {
-
-                height: 190px;
-
-            }
-
+            .college-grid { grid-template-columns: 1fr; }
+            .search-tools { flex-direction: column; }
         }
-
     </style>
-
 </head>
-
 
 <body>
 
-
-    <!-- =========================================
-         HEADER
-    ========================================= -->
-
     <header class="site-header">
-
         <div class="header-inner">
-
-
-            <!-- BRAND -->
-
-            <a
-                href="Index.html"
-                class="brand"
-            >
-                WebEnnroll
-            </a>
-
-
-            <!-- DESKTOP NAV -->
-
+            <a href="Index.html" class="brand">WebEnroll</a>
             <nav class="desktop-nav">
-
-                <a href="Index.html">
-                    Home
-                </a>
-
-                <a href="colleges.html">
-                    Find Colleges
-                </a>
-
-                <a href="Index.html#how-it-works">
-                    How It Works
-                </a>
-
-                <a href="Index.html#features">
-                    Features
-                </a>
-
+                <a href="Index.html">Home</a>
+                <a href="colleges.html">Find Colleges</a>
+                <a href="Index.html#how-it-works">How It Works</a>
             </nav>
-
-
-            <!-- DESKTOP ACTIONS -->
-
-            <div class="header-actions">
-
-                <a
-                    href="#login"
-                    class="login-link"
-                >
-                    Sign In
-                </a>
-
-                <a
-                    href="#get-started"
-                    class="primary-button small"
-                >
-                    Get Started
-                </a>
-
+            <div class="header-actions" id="headerActions">
+                <a href="login.html" class="login-link">Sign In</a>
+                <a href="signup.html" class="primary-button small">Get Started</a>
             </div>
-
-
-            <!-- MOBILE MENU BUTTON -->
-
-            <button
-                class="menu-button"
-                id="menuButton"
-                type="button"
-                aria-label="Open menu"
-                aria-expanded="false"
-            >
-                ☰
-            </button>
-
-
+            <button class="menu-button" id="menuButton" type="button" aria-label="Open menu">☰</button>
         </div>
-
     </header>
-
-
-    <!-- =========================================
-         MOBILE MENU
-    ========================================= -->
-
-    <aside
-        class="mobile-menu"
-        id="mobileMenu"
-        aria-hidden="true"
-    >
-
-
-        <div class="mobile-menu-header">
-
-            <button
-                class="close-button"
-                id="closeButton"
-                type="button"
-                aria-label="Close menu"
-            >
-                ×
-            </button>
-
-        </div>
-
-
-        <nav class="mobile-nav">
-
-
-            <a href="Index.html">
-                Home
-            </a>
-
-
-            <a href="colleges.html">
-                Find Colleges
-            </a>
-
-
-            <a href="Index.html#how-it-works">
-                How It Works
-            </a>
-
-
-            <a href="Index.html#features">
-                Features
-            </a>
-
-
-            <a href="#login">
-                Sign In
-            </a>
-
-
-            <a
-                href="#get-started"
-                class="mobile-cta"
-            >
-                Get Started
-            </a>
-
-
-        </nav>
-
-    </aside>
-
-
-    <!-- =========================================
-         MAIN
-    ========================================= -->
 
     <main class="colleges-page">
 
-
-        <!-- HERO -->
-
         <section class="colleges-hero">
-
             <div class="colleges-hero-inner">
+                <a href="Index.html" class="back-link">← Back to home</a>
+                <h1>Find Colleges</h1>
+                <p>Explore top colleges and universities across Metro Manila with direct admission links and strand recommendations.</p>
+            </div>
+        </section>
 
+        <!-- RECOMMENDATIONS SECTION -->
+        <section class="section-wrapper" id="recommendedSection">
+            <h2 class="section-title">
+                Recommended For You 
+                <span class="badge-rec" id="userStrandBadge">Recommended</span>
+            </h2>
+            <p class="section-subtitle" id="userWelcomeSub">Based on your Senior High School profile details during account registration.</p>
+            
+            <div class="college-grid" id="recommendedGrid">
+                <!-- Recommendations loaded via JS -->
+            </div>
+        </section>
 
-                <a
-                    href="Index.html"
-                    class="back-link"
-                >
-                    ← Back to home
-                </a>
+        <!-- ALL COLLEGES WITH SEARCH -->
+        <section class="search-tools">
+            <div class="search-box">
+                <input type="search" id="collegeSearch" placeholder="Search college name, city, or course..." autocomplete="off">
+            </div>
 
+            <select id="strandFilter" class="filter-dropdown">
+                <option value="all">All SHS Strands</option>
+                <option value="ICT">TVL - ICT Focus</option>
+                <option value="STEM">STEM Focus</option>
+                <option value="ABM">ABM Focus</option>
+                <option value="HUMSS">HUMSS Focus</option>
+            </select>
 
-                <h1>
-                    Find a college
-                </h1>
+            <select id="locationFilter" class="filter-dropdown">
+                <option value="all">All Cities in NCR</option>
+                <option value="Valenzuela">Valenzuela</option>
+                <option value="Manila">Manila</option>
+                <option value="Quezon City">Quezon City</option>
+            </select>
+        </section>
 
+        <section class="section-wrapper">
+            <h2 class="section-title">All Colleges</h2>
+            
+            <div class="college-grid" id="collegeList">
 
-                <p>
-                    Explore colleges and universities,
-                    compare your options, and visit
-                    each school's official website for
-                    admissions information.
-                </p>
+                <!-- PLV -->
+                <article class="college-card" data-id="plv" data-name="Pamantasan ng Lungsod ng Valenzuela PLV" data-strand="ICT STEM ABM HUMSS" data-location="Valenzuela" data-title="Pamantasan ng Lungsod ng Valenzuela (PLV)" data-url="https://www.plv.edu.ph/">
+                    <div class="college-img-wrap">
+                        <img class="college-image" src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Pamantasan_ng_Lungsod_ng_Valenzuela_Facade.jpg/640px-Pamantasan_ng_Lungsod_ng_Valenzuela_Facade.jpg" alt="PLV" loading="lazy">
+                    </div>
+                    <div class="college-content">
+                        <div class="badge-container">
+                            <span class="badge-location">Valenzuela City</span>
+                            <span class="badge-strand">ICT / STEM / ABM</span>
+                        </div>
+                        <h3>Pamantasan ng Lungsod ng Valenzuela</h3>
+                        <p>Local university offering IT, Engineering, Business, and Education degree programs.</p>
+                    </div>
+                    <div class="college-action">
+                        <a class="official-link" href="https://www.plv.edu.ph/" target="_blank" rel="noopener noreferrer">Admission Portal ↗</a>
+                        <button type="button" class="save-card-btn" onclick="toggleSaveCollege(this)">+ Save</button>
+                    </div>
+                </article>
 
+                <!-- PUP -->
+                <article class="college-card" data-id="pup" data-name="Polytechnic University of the Philippines PUP Sta Mesa" data-strand="ICT STEM ABM HUMSS" data-location="Manila" data-title="Polytechnic University of the Philippines (PUP)" data-url="https://www.pup.edu.ph/iapply/">
+                    <div class="college-img-wrap">
+                        <img class="college-image" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/PUP_Main_Academic_Bldg.jpg/640px-PUP_Main_Academic_Bldg.jpg" alt="PUP" loading="lazy">
+                    </div>
+                    <div class="college-content">
+                        <div class="badge-container">
+                            <span class="badge-location">Sta. Mesa, Manila</span>
+                            <span class="badge-strand">ICT / STEM / ABM</span>
+                        </div>
+                        <h3>Polytechnic University of the Philippines</h3>
+                        <p>National polytechnic state university known for Computer Science, Information Technology, and Engineering.</p>
+                    </div>
+                    <div class="college-action">
+                        <a class="official-link" href="https://www.pup.edu.ph/iapply/" target="_blank" rel="noopener noreferrer">PUP iApply Portal ↗</a>
+                        <button type="button" class="save-card-btn" onclick="toggleSaveCollege(this)">+ Save</button>
+                    </div>
+                </article>
+
+                <!-- UP DILIMAN -->
+                <article class="college-card" data-id="upd" data-name="University of the Philippines Diliman UP UPD UPCAT" data-strand="STEM ICT HUMSS ABM" data-location="Quezon City" data-title="UP Diliman" data-url="https://upcat.up.edu.ph/">
+                    <div class="college-img-wrap">
+                        <img class="college-image" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/UP_Diliman_Oblation.jpg/640px-UP_Diliman_Oblation.jpg" alt="UP Diliman" loading="lazy">
+                    </div>
+                    <div class="college-content">
+                        <div class="badge-container">
+                            <span class="badge-location">Quezon City</span>
+                            <span class="badge-strand">All Strands</span>
+                        </div>
+                        <h3>University of the Philippines Diliman</h3>
+                        <p>The premier state university system offering top-tier Computer Science, Engineering, and Sciences.</p>
+                    </div>
+                    <div class="college-action">
+                        <a class="official-link" href="https://upcat.up.edu.ph/" target="_blank" rel="noopener noreferrer">UPCAT Portal ↗</a>
+                        <button type="button" class="save-card-btn" onclick="toggleSaveCollege(this)">+ Save</button>
+                    </div>
+                </article>
+
+                <!-- TUP MANILA -->
+                <article class="college-card" data-id="tup" data-name="Technological University of the Philippines TUP Manila" data-strand="ICT STEM" data-location="Manila" data-title="Technological University of the Philippines (TUP)" data-url="https://www.tup.edu.ph/">
+                    <div class="college-img-wrap">
+                        <img class="college-image" src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/TUP_Manila_IRT_Building.jpg/640px-TUP_Manila_IRT_Building.jpg" alt="TUP Manila" loading="lazy">
+                    </div>
+                    <div class="college-content">
+                        <div class="badge-container">
+                            <span class="badge-location">Ermita, Manila</span>
+                            <span class="badge-strand">ICT / STEM Heavy</span>
+                        </div>
+                        <h3>Technological University of the Philippines</h3>
+                        <p>Premier state university for engineering technology, computer technology, and technical education.</p>
+                    </div>
+                    <div class="college-action">
+                        <a class="official-link" href="https://www.tup.edu.ph/" target="_blank" rel="noopener noreferrer">Admission Portal ↗</a>
+                        <button type="button" class="save-card-btn" onclick="toggleSaveCollege(this)">+ Save</button>
+                    </div>
+                </article>
+
+                <!-- UST -->
+                <article class="college-card" data-id="ust" data-name="University of Santo Tomas UST USTET" data-strand="STEM ICT ABM HUMSS" data-location="Manila" data-title="University of Santo Tomas (UST)" data-url="https://ustet.ust.edu.ph/">
+                    <div class="college-img-wrap">
+                        <img class="college-image" src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/UST_Main_Building.jpg/640px-UST_Main_Building.jpg" alt="UST" loading="lazy">
+                    </div>
+                    <div class="college-content">
+                        <div class="badge-container">
+                            <span class="badge-location">Sampaloc, Manila</span>
+                            <span class="badge-strand">All Strands</span>
+                        </div>
+                        <h3>University of Santo Tomas</h3>
+                        <p>Historic university offering Information Systems, IT, Medicine, Architecture, and Business.</p>
+                    </div>
+                    <div class="college-action">
+                        <a class="official-link" href="https://ustet.ust.edu.ph/" target="_blank" rel="noopener noreferrer">USTET Portal ↗</a>
+                        <button type="button" class="save-card-btn" onclick="toggleSaveCollege(this)">+ Save</button>
+                    </div>
+                </article>
+
+                <!-- FEU TECH -->
+                <article class="college-card" data-id="feutech" data-name="FEU Institute of Technology FEU Tech" data-strand="ICT STEM" data-location="Manila" data-title="FEU Institute of Technology" data-url="https://www.feutech.edu.ph/">
+                    <div class="college-img-wrap">
+                        <img class="college-image" src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/FEU_FIT_Building.jpg/640px-FEU_FIT_Building.jpg" alt="FEU Tech" loading="lazy">
+                    </div>
+                    <div class="college-content">
+                        <div class="badge-container">
+                            <span class="badge-location">Sampaloc, Manila</span>
+                            <span class="badge-strand">ICT / STEM Specialist</span>
+                        </div>
+                        <h3>FEU Institute of Technology</h3>
+                        <p>Specializes in Information Technology, Software Engineering, Game Development, and Animation.</p>
+                    </div>
+                    <div class="college-action">
+                        <a class="official-link" href="https://www.feutech.edu.ph/" target="_blank" rel="noopener noreferrer">Admissions Site ↗</a>
+                        <button type="button" class="save-card-btn" onclick="toggleSaveCollege(this)">+ Save</button>
+                    </div>
+                </article>
 
             </div>
 
+            <div class="no-results" id="noResults" hidden>
+                No colleges match your filter criteria.
+            </div>
         </section>
 
-
-        <!-- SEARCH -->
-
-        <section class="college-tools">
-
-            <label
-                class="search-box"
-                for="collegeSearch"
-            >
-
-                <span
-                    class="search-icon"
-                    aria-hidden="true"
-                >
-                    ⌕
-                </span>
-
-
-                <input
-                    type="search"
-                    id="collegeSearch"
-                    placeholder="Search colleges or universities..."
-                    autocomplete="off"
-                >
-
-
-            </label>
-
-        </section>
-
-
-        <!-- =========================================
-             COLLEGE CARDS
-        ========================================= -->
-
-        <section
-            class="college-list"
-            id="collegeList"
-        >
-
-
-            <!-- UNIVERSITY OF THE PHILIPPINES -->
-
-            <article
-                class="college-card"
-                data-name="University of the Philippines UP"
-            >
-
-                <img
-                    class="college-image"
-                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/UP_Diliman_Oblation.jpg/640px-UP_Diliman_Oblation.jpg"
-                    alt="University of the Philippines"
-                    loading="lazy"
-                >
-
-
-                <div class="college-content">
-
-                    <span class="college-location">
-                        Quezon City
-                    </span>
-
-
-                    <h2>
-                        University of the Philippines
-                    </h2>
-
-
-                    <p>
-                        A national university system
-                        with campuses and academic
-                        programs across the Philippines.
-                    </p>
-
-                </div>
-
-
-                <div class="college-action">
-
-                    <a
-                        class="official-link"
-                        href="https://up.edu.ph/"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        Visit Official Website ↗
-                    </a>
-
-                </div>
-
-            </article>
-
-
-            <!-- ATENEO -->
-
-            <article
-                class="college-card"
-                data-name="Ateneo de Manila University ADMU"
-            >
-
-                <img
-                    class="college-image"
-                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/76/Ateneo_de_Manila_University_Bellarmine_Field.jpg/640px-Ateneo_de_Manila_University_Bellarmine_Field.jpg"
-                    alt="Ateneo de Manila University"
-                    loading="lazy"
-                >
-
-
-                <div class="college-content">
-
-                    <span class="college-location">
-                        Quezon City
-                    </span>
-
-
-                    <h2>
-                        Ateneo de Manila University
-                    </h2>
-
-
-                    <p>
-                        A private university offering
-                        undergraduate and graduate
-                        programs in many disciplines.
-                    </p>
-
-                </div>
-
-
-                <div class="college-action">
-
-                    <a
-                        class="official-link"
-                        href="https://www.ateneo.edu/"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        Visit Official Website ↗
-                    </a>
-
-                </div>
-
-            </article>
-
-
-            <!-- DLSU -->
-
-            <article
-                class="college-card"
-                data-name="De La Salle University DLSU"
-            >
-
-                <img
-                    class="college-image"
-                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/De_La_Salle_University-Manila.jpg/640px-De_La_Salle_University-Manila.jpg"
-                    alt="De La Salle University"
-                    loading="lazy"
-                >
-
-
-                <div class="college-content">
-
-                    <span class="college-location">
-                        Manila
-                    </span>
-
-
-                    <h2>
-                        De La Salle University
-                    </h2>
-
-
-                    <p>
-                        A private research university
-                        offering programs in business,
-                        technology, engineering, and more.
-                    </p>
-
-                </div>
-
-
-                <div class="college-action">
-
-                    <a
-                        class="official-link"
-                        href="https://www.dlsu.edu.ph/"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        Visit Official Website ↗
-                    </a>
-
-                </div>
-
-            </article>
-
-
-            <!-- UST -->
-
-            <article
-                class="college-card"
-                data-name="University of Santo Tomas UST"
-            >
-
-                <img
-                    class="college-image"
-                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/UST_Main_Building.jpg/640px-UST_Main_Building.jpg"
-                    alt="University of Santo Tomas"
-                    loading="lazy"
-                >
-
-
-                <div class="college-content">
-
-                    <span class="college-location">
-                        Manila
-                    </span>
-
-
-                    <h2>
-                        University of Santo Tomas
-                    </h2>
-
-
-                    <p>
-                        A university offering programs
-                        across health sciences, education,
-                        business, technology, and more.
-                    </p>
-
-                </div>
-
-
-                <div class="college-action">
-
-                    <a
-                        class="official-link"
-                        href="https://www.ust.edu.ph/"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        Visit Official Website ↗
-                    </a>
-
-                </div>
-
-            </article>
-
-
-            <!-- MAPUA -->
-
-            <article
-                class="college-card"
-                data-name="Mapua University"
-            >
-
-                <img
-                    class="college-image"
-                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Mapua_University.jpg/640px-Mapua_University.jpg"
-                    alt="Mapua University"
-                    loading="lazy"
-                >
-
-
-                <div class="college-content">
-
-                    <span class="college-location">
-                        Manila
-                    </span>
-
-
-                    <h2>
-                        Mapúa University
-                    </h2>
-
-
-                    <p>
-                        A technology-focused university
-                        offering programs in engineering,
-                        computing, design, and related fields.
-                    </p>
-
-                </div>
-
-
-                <div class="college-action">
-
-                    <a
-                        class="official-link"
-                        href="https://www.mapua.edu.ph/"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        Visit Official Website ↗
-                    </a>
-
-                </div>
-
-            </article>
-
-
-            <!-- PUP -->
-
-            <article
-                class="college-card"
-                data-name="Polytechnic University of the Philippines PUP"
-            >
-
-                <img
-                    class="college-image"
-                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/PUP_Main_Academic_Bldg.jpg/640px-PUP_Main_Academic_Bldg.jpg"
-                    alt="Polytechnic University of the Philippines"
-                    loading="lazy"
-                >
-
-
-                <div class="college-content">
-
-                    <span class="college-location">
-                        Manila
-                    </span>
-
-
-                    <h2>
-                        Polytechnic University of the Philippines
-                    </h2>
-
-
-                    <p>
-                        A public university with programs
-                        in business, technology, education,
-                        engineering, and other fields.
-                    </p>
-
-                </div>
-
-
-                <div class="college-action">
-
-                    <a
-                        class="official-link"
-                        href="https://www.pup.edu.ph/"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        Visit Official Website ↗
-                    </a>
-
-                </div>
-
-            </article>
-
-
-        </section>
-
-
-        <!-- NO RESULTS -->
-<div 
-  class="no-results" 
-  id="noResults" 
-  hidden
->
-  No colleges found matching your search.
-</div>
-
-</main>
-
-<!-- ===================================================
-        FOOTER
-==================================================== -->
-
-<footer>
-  <div class="footer-inner">
-    <span class="footer-copy">
-      © 2026 WebEnnroll
-    </span>
-
-    <div class="footer-links">
-      <a href="#privacy">Privacy</a>
-      <a href="#help">Help</a>
-    </div>
-  </div>
-</footer>
-
-<!-- ===================================================
-        JAVASCRIPT
-==================================================== -->
-
-<script src="js/app.js"></script>
-
-<script>
-  const searchInput = document.getElementById("collegeSearch");
-  const collegeList = document.getElementById("collegeList");
-  const noResults = document.getElementById("noResults");
-  const colleges = collegeList.querySelectorAll(".college-card");
-
-  searchInput.addEventListener("input", function () {
-    const search = this.value.trim().toLowerCase();
-    let visibleCount = 0;
-
-    colleges.forEach(function (college) {
-      const name = college.dataset.name.toLowerCase();
-      const matches = name.includes(search);
-
-      college.style.display = matches ? "" : "none";
-
-      if (matches) {
-        visibleCount++;
-      }
-    });
-
-    noResults.hidden = visibleCount !== 0;
-  });
-</script>
+    </main>
+
+    <script src="js/auth.js"></script>
+    <script src="js/app.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Mobile Menu Toggle Fix
+            const menuButton = document.getElementById("menuButton");
+            const desktopNav = document.querySelector(".desktop-nav");
+
+            if (menuButton && desktopNav) {
+                menuButton.addEventListener("click", function () {
+                    desktopNav.classList.toggle("active");
+                });
+            }
+
+            // Read account information stored during signup/profile
+            const currentUser = JSON.parse(localStorage.getItem("currentUser") || "{}");
+            
+            // Extract First Name from full name entry
+            const rawName = currentUser.firstName || currentUser.fullName || currentUser.name || "User";
+            const firstName = rawName.trim().split(" ")[0]; 
+            const userStr and = currentUser.strand || "ICT";
+
+            // Update UI with User's First Name & Strand
+            const userStrandBadge = document.getElementById("userStrandBadge");
+            const userWelcomeSub = document.getElementById("userWelcomeSub");
+
+            if (userStrandBadge) {
+                userStrandBadge.textContent = `${firstName}'s Track: ${userStrand}`;
+            }
+            if (userWelcomeSub) {
+                userWelcomeSub.textContent = `Hello ${firstName}! Here are recommended colleges based on your ${userStrand} strand details.`;
+            }
+
+            // Populate Recommendations Grid
+            const allCards = Array.from(document.querySelectorAll("#collegeList .college-card"));
+            const recommendedGrid = document.getElementById("recommendedGrid");
+
+            const recommendedCards = allCards.filter(card => {
+                const strands = card.dataset.strand || "";
+                return strands.includes(userStrand);
+            }).slice(0, 3);
+
+            recommendedCards.forEach(card => {
+                const clone = card.cloneNode(true);
+                recommendedGrid.appendChild(clone);
+            });
+
+            // Filtering Functionality
+            const searchInput = document.getElementById("collegeSearch");
+            const strandFilter = document.getElementById("strandFilter");
+            const locationFilter = document.getElementById("locationFilter");
+            const noResults = document.getElementById("noResults");
+
+            function filterColleges() {
+                const search = searchInput.value.trim().toLowerCase();
+                const selectedStrand = strandFilter.value;
+                const selectedLocation = locationFilter.value;
+
+                let visibleCount = 0;
+
+                allCards.forEach(function (college) {
+                    const name = college.dataset.name.toLowerCase();
+                    const strands = college.dataset.strand;
+                    const location = college.dataset.location;
+
+                    const matchesSearch = name.includes(search);
+                    const matchesStrand = selectedStrand === "all" || strands.includes(selectedStrand);
+                    const matchesLocation = selectedLocation === "all" || location === selectedLocation;
+
+                    if (matchesSearch && matchesStrand && matchesLocation) {
+                        college.style.display = "";
+                        visibleCount++;
+                    } else {
+                        college.style.display = "none";
+                    }
+                });
+
+                noResults.hidden = visibleCount !== 0;
+            }
+
+            searchInput.addEventListener("input", filterColleges);
+            strandFilter.addEventListener("change", filterColleges);
+            locationFilter.addEventListener("change", filterColleges);
+
+            updateSavedButtonsState();
+        });
+
+        function toggleSaveCollege(button) {
+            const card = button.closest(".college-card");
+            const id = card.dataset.id;
+            const title = card.dataset.title;
+            const url = card.dataset.url;
+
+            let saved = JSON.parse(localStorage.getItem("savedColleges") || "[]");
+            const index = saved.findIndex(item => item.id === id);
+
+            if (index > -1) {
+                saved.splice(index, 1);
+            } else {
+                saved.push({ id, name: title, url });
+            }
+
+            localStorage.setItem("savedColleges", JSON.stringify(saved));
+            updateSavedButtonsState();
+        }
+
+        function updateSavedButtonsState() {
+            const saved = JSON.parse(localStorage.getItem("savedColleges") || "[]");
+            const allButtons = document.querySelectorAll(".save-card-btn");
+
+            allButtons.forEach(btn => {
+                const card = btn.closest(".college-card");
+                const id = card.dataset.id;
+                const isSaved = saved.some(item => item.id === id);
+
+                if (isSaved) {
+                    btn.textContent = "✓ Saved";
+                    btn.classList.add("saved");
+                } else {
+                    btn.textContent = "+ Save";
+                    btn.classList.remove("saved");
+                }
+            });
+        }
+    </script>
 
 </body>
 </html>
-
