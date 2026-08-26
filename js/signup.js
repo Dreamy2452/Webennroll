@@ -17,7 +17,11 @@ document.addEventListener("DOMContentLoaded", function () {
        SETTINGS
     ========================================= */
 
-    const TOTAL_STEPS = 7;
+    const steps = Array.from(
+        document.querySelectorAll(".signup-step")
+    );
+
+    const TOTAL_STEPS = steps.length;
 
     let currentStep = 1;
 
@@ -26,18 +30,23 @@ document.addEventListener("DOMContentLoaded", function () {
        ELEMENTS
     ========================================= */
 
-    const steps = Array.from(
-        document.querySelectorAll(".signup-step")
-    );
+    const nextButtons =
+        document.querySelectorAll("[data-next]");
 
-    const nextButtons = document.querySelectorAll("[data-next]");
-    const backButtons = document.querySelectorAll("[data-back]");
+    const backButtons =
+        document.querySelectorAll("[data-back]");
 
-    const stepLabel = document.getElementById("stepLabel");
-    const progressPercent = document.getElementById("progressPercent");
-    const progressFill = document.getElementById("progressFill");
+    const stepLabel =
+        document.getElementById("stepLabel");
 
-    const formError = document.getElementById("formError");
+    const progressPercent =
+        document.getElementById("progressPercent");
+
+    const progressFill =
+        document.getElementById("progressFill");
+
+    const formError =
+        document.getElementById("formError");
 
 
     /* =========================================
@@ -48,24 +57,22 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /* =========================================
-       NEXT BUTTONS
+       NEXT
     ========================================= */
 
     nextButtons.forEach(function (button) {
 
         button.addEventListener("click", function () {
 
-            const activeStep = document.querySelector(
-                `.signup-step[data-step="${currentStep}"]`
-            );
+            const step =
+                getCurrentStepElement();
 
-            if (!activeStep) {
+            if (!step) {
                 return;
             }
 
 
-            // Validate current step
-            if (!validateStep(activeStep)) {
+            if (!validateStep(step)) {
                 return;
             }
 
@@ -89,12 +96,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /* =========================================
-       BACK BUTTONS
+       BACK
     ========================================= */
 
     backButtons.forEach(function (button) {
 
         button.addEventListener("click", function () {
+
+            clearError();
 
             if (currentStep > 1) {
 
@@ -115,22 +124,21 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /* =========================================
-       FORM SUBMIT
+       SUBMIT / CREATE ACCOUNT
     ========================================= */
 
-    form.addEventListener("submit", function (event) {
+    form.addEventListener("submit", async function (event) {
 
         event.preventDefault();
 
         clearError();
 
 
-        const activeStep = document.querySelector(
-            `.signup-step[data-step="${currentStep}"]`
-        );
+        const step =
+            getCurrentStepElement();
 
 
-        if (!validateStep(activeStep)) {
+        if (!validateStep(step)) {
             return;
         }
 
@@ -145,33 +153,24 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
 
-        const userData = collectFormData();
+        const account =
+            await buildAccount();
 
 
         /*
-         * For now, save the account locally.
+         * Save account for prototype testing.
          *
          * IMPORTANT:
-         * localStorage is only for prototype/testing.
-         * It should NOT be used as the real production
-         * authentication system.
+         * This is NOT production authentication.
+         * We will replace this with Firebase
+         * Authentication later.
          */
 
         localStorage.setItem(
-            "webennrollUser",
-            JSON.stringify(userData)
+            "webennrollAccount",
+            JSON.stringify(account)
         );
 
-
-        localStorage.setItem(
-            "webennrollLoggedIn",
-            "true"
-        );
-
-
-        /*
-         * Save onboarding completion.
-         */
 
         localStorage.setItem(
             "webennrollOnboardingComplete",
@@ -180,10 +179,19 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         /*
-         * Redirect to login/dashboard.
+         * We do NOT automatically mark the user
+         * as logged in here.
          *
-         * Change this later when we connect Firebase
-         * or another real authentication backend.
+         * They will be sent to login.html.
+         */
+
+        localStorage.removeItem(
+            "webennrollLoggedIn"
+        );
+
+
+        /*
+         * Redirect to Sign In.
          */
 
         window.location.href = "login.html";
@@ -199,11 +207,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
         steps.forEach(function (step) {
 
-            const stepValue = Number(
-                step.dataset.step
-            );
+            const number =
+                Number(step.dataset.step);
 
-            if (stepValue === stepNumber) {
+
+            if (number === stepNumber) {
 
                 step.classList.add("active");
 
@@ -228,14 +236,28 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /* =========================================
-       UPDATE PROGRESS
+       CURRENT STEP
+    ========================================= */
+
+    function getCurrentStepElement() {
+
+        return document.querySelector(
+            `.signup-step[data-step="${currentStep}"]`
+        );
+
+    }
+
+
+    /* =========================================
+       PROGRESS
     ========================================= */
 
     function updateProgress(stepNumber) {
 
-        const percentage = Math.round(
-            (stepNumber / TOTAL_STEPS) * 100
-        );
+        const percentage =
+            Math.round(
+                (stepNumber / TOTAL_STEPS) * 100
+            );
 
 
         if (stepLabel) {
@@ -278,44 +300,49 @@ document.addEventListener("DOMContentLoaded", function () {
         clearError();
 
 
-        /*
-         * Browser validation
-         */
-
-        const inputs = step.querySelectorAll(
-            "input, select, textarea"
-        );
+        const stepNumber =
+            Number(step.dataset.step);
 
 
-        for (const input of inputs) {
+        /* -------------------------------------
+           Browser validation
+        ------------------------------------- */
 
-            /*
-             * Skip unchecked checkboxes unless they
-             * are required.
-             */
+        const fields =
+            step.querySelectorAll(
+                "input, select, textarea"
+            );
 
-            if (
-                input.type === "checkbox" &&
-                !input.required
-            ) {
-                continue;
-            }
 
+        for (const field of fields) {
 
             /*
              * Radio buttons are handled separately.
              */
 
-            if (input.type === "radio") {
+            if (field.type === "radio") {
                 continue;
             }
 
 
-            if (!input.checkValidity()) {
+            /*
+             * Non-required unchecked checkboxes
+             * are allowed.
+             */
 
-                input.reportValidity();
+            if (
+                field.type === "checkbox" &&
+                !field.required
+            ) {
+                continue;
+            }
 
-                input.focus();
+
+            if (!field.checkValidity()) {
+
+                field.reportValidity();
+
+                field.focus();
 
                 return false;
 
@@ -324,59 +351,11 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
 
-        /*
-         * Required radio groups
-         */
+        /* -------------------------------------
+           Step 1
+        ------------------------------------- */
 
-        const radioGroups = {};
-
-
-        step.querySelectorAll(
-            'input[type="radio"][required]'
-        ).forEach(function (radio) {
-
-            const name = radio.name;
-
-            if (!radioGroups[name]) {
-                radioGroups[name] = [];
-            }
-
-            radioGroups[name].push(radio);
-
-        });
-
-
-        for (const name in radioGroups) {
-
-            const group = radioGroups[name];
-
-            const selected = group.some(
-                function (radio) {
-                    return radio.checked;
-                }
-            );
-
-
-            if (!selected) {
-
-                showError(
-                    "Please select an option before continuing."
-                );
-
-                group[0].focus();
-
-                return false;
-
-            }
-
-        }
-
-
-        /*
-         * STEP 1
-         */
-
-        if (Number(step.dataset.step) === 1) {
+        if (stepNumber === 1) {
 
             const firstName =
                 document.getElementById("firstName");
@@ -386,7 +365,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
             if (
-                firstName &&
+                !firstName ||
                 firstName.value.trim().length < 2
             ) {
 
@@ -394,7 +373,9 @@ document.addEventListener("DOMContentLoaded", function () {
                     "Please enter your first name."
                 );
 
-                firstName.focus();
+                if (firstName) {
+                    firstName.focus();
+                }
 
                 return false;
 
@@ -402,7 +383,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
             if (
-                lastName &&
+                !lastName ||
                 lastName.value.trim().length < 2
             ) {
 
@@ -410,7 +391,9 @@ document.addEventListener("DOMContentLoaded", function () {
                     "Please enter your last name."
                 );
 
-                lastName.focus();
+                if (lastName) {
+                    lastName.focus();
+                }
 
                 return false;
 
@@ -419,11 +402,11 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
 
-        /*
-         * STEP 2
-         */
+        /* -------------------------------------
+           Step 2
+        ------------------------------------- */
 
-        if (Number(step.dataset.step) === 2) {
+        if (stepNumber === 2) {
 
             const lrn =
                 document.getElementById("lrn");
@@ -432,7 +415,13 @@ document.addEventListener("DOMContentLoaded", function () {
             if (lrn) {
 
                 const cleanLRN =
-                    lrn.value.replace(/\D/g, "");
+                    lrn.value
+                        .replace(/\D/g, "")
+                        .slice(0, 12);
+
+
+                lrn.value =
+                    cleanLRN;
 
 
                 if (cleanLRN.length !== 12) {
@@ -447,23 +436,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 }
 
-
-                /*
-                 * Keep only numbers.
-                 */
-
-                lrn.value = cleanLRN;
-
             }
 
         }
 
 
-        /*
-         * STEP 3
-         */
+        /* -------------------------------------
+           Step 3
+        ------------------------------------- */
 
-        if (Number(step.dataset.step) === 3) {
+        if (stepNumber === 3) {
 
             const interests =
                 document.querySelectorAll(
@@ -484,11 +466,61 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
 
-        /*
-         * STEP 6
-         */
+        /* -------------------------------------
+           Step 4
+        ------------------------------------- */
 
-        if (Number(step.dataset.step) === 6) {
+        if (stepNumber === 4) {
+
+            const location =
+                document.querySelector(
+                    'input[name="location"]:checked'
+                );
+
+
+            if (!location) {
+
+                showError(
+                    "Please select your preferred study location."
+                );
+
+                return false;
+
+            }
+
+        }
+
+
+        /* -------------------------------------
+           Step 5
+        ------------------------------------- */
+
+        if (stepNumber === 5) {
+
+            const schoolType =
+                document.querySelector(
+                    'input[name="schoolType"]:checked'
+                );
+
+
+            if (!schoolType) {
+
+                showError(
+                    "Please select a school type preference."
+                );
+
+                return false;
+
+            }
+
+        }
+
+
+        /* -------------------------------------
+           Step 6
+        ------------------------------------- */
+
+        if (stepNumber === 6) {
 
             const priorities =
                 document.querySelectorAll(
@@ -501,6 +533,58 @@ document.addEventListener("DOMContentLoaded", function () {
                 showError(
                     "Please select at least one priority."
                 );
+
+                return false;
+
+            }
+
+
+            const financialAid =
+                document.getElementById(
+                    "financialAid"
+                );
+
+
+            if (
+                financialAid &&
+                !financialAid.value
+            ) {
+
+                showError(
+                    "Please select your financial assistance preference."
+                );
+
+                financialAid.focus();
+
+                return false;
+
+            }
+
+        }
+
+
+        /* -------------------------------------
+           Step 7
+        ------------------------------------- */
+
+        if (stepNumber === 7) {
+
+            const email =
+                document.getElementById("email");
+
+
+            if (
+                !email ||
+                !email.checkValidity()
+            ) {
+
+                showError(
+                    "Please enter a valid email address."
+                );
+
+                if (email) {
+                    email.focus();
+                }
 
                 return false;
 
@@ -524,11 +608,19 @@ document.addEventListener("DOMContentLoaded", function () {
             document.getElementById("password");
 
         const confirmPassword =
-            document.getElementById("confirmPassword");
+            document.getElementById(
+                "confirmPassword"
+            );
 
 
         if (!password || !confirmPassword) {
+
+            showError(
+                "Password fields are missing."
+            );
+
             return false;
+
         }
 
 
@@ -545,7 +637,10 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
 
-        if (password.value !== confirmPassword.value) {
+        if (
+            password.value !==
+            confirmPassword.value
+        ) {
 
             showError(
                 "Your passwords do not match."
@@ -564,7 +659,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /* =========================================
-       TERMS VALIDATION
+       TERMS
     ========================================= */
 
     function validateTerms() {
@@ -574,7 +669,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         if (!terms) {
+
+            showError(
+                "Terms checkbox is missing."
+            );
+
             return false;
+
         }
 
 
@@ -597,116 +698,128 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /* =========================================
-       COLLECT FORM DATA
+       BUILD ACCOUNT OBJECT
     ========================================= */
 
-    function collectFormData() {
+    async function buildAccount() {
 
-        const data = {};
-
-
-        /*
-         * Basic information
-         */
-
-        data.firstName =
-            getValue("firstName");
-
-        data.middleName =
-            getValue("middleName");
-
-        data.lastName =
-            getValue("lastName");
+        const password =
+            document.getElementById(
+                "password"
+            ).value;
 
 
-        /*
-         * Student information
-         */
+        const account = {
 
-        data.lrn =
-            getValue("lrn");
+            /* Student information */
 
-        data.birthDate =
-            getValue("birthDate");
+            firstName:
+                getValue("firstName"),
 
-        data.gradeLevel =
-            getValue("gradeLevel");
+            middleName:
+                getValue("middleName"),
 
-        data.school =
-            getValue("school");
+            lastName:
+                getValue("lastName"),
 
+            lrn:
+                getValue("lrn"),
 
-        /*
-         * Interests
-         */
+            birthDate:
+                getValue("birthDate"),
 
-        data.interests =
-            getCheckedValues("interest");
+            gradeLevel:
+                getValue("gradeLevel"),
 
-
-        /*
-         * Location
-         */
-
-        data.location =
-            getCheckedValue("location");
+            school:
+                getValue("school"),
 
 
-        /*
-         * School preference
-         */
+            /* Preferences */
 
-        data.schoolType =
-            getCheckedValue("schoolType");
+            interests:
+                getCheckedValues("interest"),
 
+            location:
+                getCheckedValue("location"),
 
-        /*
-         * Priorities
-         */
+            schoolType:
+                getCheckedValue("schoolType"),
 
-        data.priorities =
-            getCheckedValues("priority");
+            priorities:
+                getCheckedValues("priority"),
 
-
-        /*
-         * Financial assistance
-         */
-
-        data.financialAid =
-            getValue("financialAid");
+            financialAid:
+                getValue("financialAid"),
 
 
-        /*
-         * Account
-         */
+            /* Account */
 
-        data.email =
-            getValue("email");
-
-
-        /*
-         * NOTE:
-         * Password is intentionally NOT stored in
-         * localStorage.
-         *
-         * A real authentication backend should
-         * securely handle passwords.
-         */
+            email:
+                getValue("email")
+                    .toLowerCase(),
 
 
-        /*
-         * Metadata
-         */
+            /*
+             * The password itself is NEVER stored.
+             * Only a cryptographic hash is saved.
+             */
 
-        data.createdAt =
-            new Date().toISOString();
-
-
-        data.profileComplete =
-            true;
+            passwordHash:
+                await hashPassword(password),
 
 
-        return data;
+            /* Metadata */
+
+            createdAt:
+                new Date().toISOString(),
+
+            profileComplete:
+                true
+
+        };
+
+
+        return account;
+
+    }
+
+
+    /* =========================================
+       SHA-256 PASSWORD HASH
+    ========================================= */
+
+    async function hashPassword(password) {
+
+        const encoder =
+            new TextEncoder();
+
+        const data =
+            encoder.encode(password);
+
+
+        const buffer =
+            await crypto.subtle.digest(
+                "SHA-256",
+                data
+            );
+
+
+        const bytes =
+            Array.from(
+                new Uint8Array(buffer)
+            );
+
+
+        return bytes
+            .map(function (byte) {
+
+                return byte
+                    .toString(16)
+                    .padStart(2, "0");
+
+            })
+            .join("");
 
     }
 
@@ -751,7 +864,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /* =========================================
-       GET CHECKED RADIO
+       GET RADIO VALUE
     ========================================= */
 
     function getCheckedValue(name) {
@@ -770,19 +883,24 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /* =========================================
-       ERROR MESSAGE
+       SHOW ERROR
     ========================================= */
 
     function showError(message) {
 
         if (!formError) {
+
             alert(message);
+
             return;
+
         }
 
 
         formError.textContent =
             message;
+
+        formError.hidden = false;
 
         formError.classList.add("show");
 
@@ -808,13 +926,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
         formError.textContent = "";
 
+        formError.hidden = true;
+
         formError.classList.remove("show");
 
     }
 
 
     /* =========================================
-       INPUT CLEANUP
+       LRN INPUT
     ========================================= */
 
     const lrnInput =
@@ -839,34 +959,30 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /* =========================================
-       CLEAR PASSWORD ERROR WHILE TYPING
+       CLEAR ERROR WHILE TYPING
     ========================================= */
 
-    const passwordInputs =
-        document.querySelectorAll(
-            "#password, #confirmPassword"
-        );
+    form.addEventListener(
+        "input",
+        function (event) {
 
+            if (
+                event.target.matches(
+                    "input, select, textarea"
+                )
+            ) {
 
-    passwordInputs.forEach(function (input) {
-
-        input.addEventListener(
-            "input",
-            function () {
-
-                if (formError) {
-                    clearError();
-                }
+                clearError();
 
             }
-        );
 
-    });
+        }
+    );
 
 
     /* =========================================
-       PREVENT ACCIDENTAL ENTER SUBMISSION
-       ========================================= */
+       ENTER KEY
+    ========================================= */
 
     form.addEventListener(
         "keydown",
@@ -877,33 +993,30 @@ document.addEventListener("DOMContentLoaded", function () {
                 event.target.tagName !== "TEXTAREA"
             ) {
 
-                /*
-                 * Prevent Enter from immediately
-                 * submitting the entire form.
-                 */
-
                 event.preventDefault();
 
-                const activeStep =
-                    document.querySelector(
-                        `.signup-step[data-step="${currentStep}"]`
-                    );
+
+                const step =
+                    getCurrentStepElement();
 
 
                 const nextButton =
-                    activeStep
-                        ? activeStep.querySelector("[data-next]")
+                    step
+                        ? step.querySelector(
+                            "[data-next]"
+                        )
                         : null;
 
 
                 if (nextButton) {
+
                     nextButton.click();
+
                 }
 
             }
 
         }
     );
-
 
 });

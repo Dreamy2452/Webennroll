@@ -1,366 +1,337 @@
+/* =========================================
+   WEBENNROLL
+   Login Authentication
+   Prototype Version
+========================================= */
+
 document.addEventListener("DOMContentLoaded", () => {
 
-    const form = document.getElementById("signupForm");
+    const loginForm = document.getElementById("loginForm");
 
-    if (!form) return;
-
-
-    const steps =
-        document.querySelectorAll(".signup-step");
-
-    const progressFill =
-        document.getElementById("progressFill");
-
-    const stepLabel =
-        document.getElementById("stepLabel");
-
-    const progressPercent =
-        document.getElementById("progressPercent");
-
-    const formError =
-        document.getElementById("formError");
+    if (!loginForm) {
+        console.error("Login form not found.");
+        return;
+    }
 
 
-    let currentStep = 0;
+    const emailInput = document.getElementById("email");
+    const passwordInput = document.getElementById("password");
+    const rememberInput = document.getElementById("remember");
+
+    const loginError = document.getElementById("loginError");
+    const togglePassword = document.getElementById("togglePassword");
 
 
-    function showStep(index) {
+    /* =========================================
+       PASSWORD VISIBILITY
+    ========================================= */
 
-        steps.forEach((step, i) => {
+    if (togglePassword && passwordInput) {
 
-            step.classList.toggle(
-                "active",
-                i === index
+        togglePassword.addEventListener("click", () => {
+
+            const isPassword =
+                passwordInput.type === "password";
+
+            passwordInput.type =
+                isPassword ? "text" : "password";
+
+            togglePassword.textContent =
+                isPassword ? "Hide" : "Show";
+
+            togglePassword.setAttribute(
+                "aria-label",
+                isPassword
+                    ? "Hide password"
+                    : "Show password"
             );
 
-        });
-
-
-        const stepNumber = index + 1;
-
-        const percentage =
-            Math.round(
-                (stepNumber / steps.length) * 100
-            );
-
-
-        progressFill.style.width =
-            percentage + "%";
-
-
-        stepLabel.textContent =
-            `Step ${stepNumber} of ${steps.length}`;
-
-
-        progressPercent.textContent =
-            percentage + "%";
-
-
-        window.scrollTo({
-            top: 0,
-            behavior: "smooth"
         });
 
     }
 
 
-    function validateStep() {
+    /* =========================================
+       LOGIN FORM
+    ========================================= */
 
-        const current =
-            steps[currentStep];
+    loginForm.addEventListener("submit", async (event) => {
+
+        event.preventDefault();
+
+        hideError();
 
 
-        const requiredFields =
-            current.querySelectorAll(
-                "input[required], select[required]"
+        const email =
+            emailInput.value.trim().toLowerCase();
+
+        const password =
+            passwordInput.value;
+
+
+        /* =====================================
+           BASIC VALIDATION
+        ===================================== */
+
+        if (!email) {
+
+            showError(
+                "Please enter your email address."
             );
 
+            emailInput.focus();
 
-        for (const field of requiredFields) {
-
-            if (
-                field.type === "checkbox" &&
-                !field.checked
-            ) {
-
-                return false;
-
-            }
-
-
-            if (
-                field.type === "radio"
-            ) {
-
-                const group =
-                    current.querySelectorAll(
-                        `input[name="${field.name}"]`
-                    );
-
-                const checked =
-                    [...group].some(
-                        radio => radio.checked
-                    );
-
-                if (!checked) {
-                    return false;
-                }
-
-            }
-            else if (
-                !field.value.trim()
-            ) {
-
-                return false;
-
-            }
-
+            return;
         }
 
 
-        return true;
+        if (!emailInput.checkValidity()) {
 
-    }
-
-
-    document
-        .querySelectorAll("[data-next]")
-        .forEach(button => {
-
-            button.addEventListener(
-                "click",
-                () => {
-
-                    formError.hidden = true;
-
-
-                    if (!validateStep()) {
-
-                        alert(
-                            "Please complete the required information before continuing."
-                        );
-
-                        return;
-
-                    }
-
-
-                    if (
-                        currentStep <
-                        steps.length - 1
-                    ) {
-
-                        currentStep++;
-
-                        showStep(currentStep);
-
-                    }
-
-                }
+            showError(
+                "Please enter a valid email address."
             );
 
-        });
+            emailInput.focus();
+
+            return;
+        }
 
 
-    document
-        .querySelectorAll("[data-back]")
-        .forEach(button => {
+        if (!password) {
 
-            button.addEventListener(
-                "click",
-                () => {
-
-                    formError.hidden = true;
-
-
-                    if (currentStep > 0) {
-
-                        currentStep--;
-
-                        showStep(currentStep);
-
-                    }
-
-                }
+            showError(
+                "Please enter your password."
             );
 
-        });
+            passwordInput.focus();
+
+            return;
+        }
 
 
-    form.addEventListener(
-        "submit",
-        event => {
+        /* =====================================
+           GET SAVED ACCOUNT
+        ===================================== */
 
-            event.preventDefault();
-
-            formError.hidden = true;
-
-
-            const password =
-                document
-                    .getElementById("password")
-                    .value;
-
-            const confirmPassword =
-                document
-                    .getElementById("confirmPassword")
-                    .value;
-
-            const terms =
-                document
-                    .getElementById("terms")
-                    .checked;
+        const savedAccount =
+            localStorage.getItem(
+                "webennrollAccount"
+            );
 
 
-            if (password.length < 8) {
+        if (!savedAccount) {
 
-                formError.textContent =
-                    "Your password must contain at least 8 characters.";
+            showError(
+                "No WebEnnroll account was found. Please create an account first."
+            );
 
-                formError.hidden = false;
-
-                return;
-
-            }
+            return;
+        }
 
 
-            if (password !== confirmPassword) {
-
-                formError.textContent =
-                    "Your passwords do not match.";
-
-                formError.hidden = false;
-
-                return;
-
-            }
+        let account;
 
 
-            if (!terms) {
+        try {
 
-                formError.textContent =
-                    "Please accept the Terms of Use and Privacy Policy.";
+            account =
+                JSON.parse(savedAccount);
 
-                formError.hidden = false;
+        } catch (error) {
 
-                return;
+            console.error(
+                "Account data could not be read:",
+                error
+            );
 
-            }
+            showError(
+                "Your account data is corrupted. Please create your account again."
+            );
+
+            return;
+        }
 
 
-            /*
-             * Collect onboarding information.
-             *
-             * Temporary prototype storage.
-             * Later this will be connected to
-             * the real authentication/database.
-             */
+        /* =====================================
+           EMAIL CHECK
+        ===================================== */
 
-            const profile = {
+        if (
+            !account.email ||
+            account.email.toLowerCase() !== email
+        ) {
 
-                firstName:
-                    document
-                        .getElementById("firstName")
-                        .value.trim(),
+            showError(
+                "The email address or password is incorrect."
+            );
 
-                middleName:
-                    document
-                        .getElementById("middleName")
-                        .value.trim(),
+            return;
+        }
 
-                lastName:
-                    document
-                        .getElementById("lastName")
-                        .value.trim(),
 
-                lrn:
-                    document
-                        .getElementById("lrn")
-                        .value.trim(),
+        /* =====================================
+           PASSWORD CHECK
+        ===================================== */
 
-                birthDate:
-                    document
-                        .getElementById("birthDate")
-                        .value,
+        const passwordHash =
+            await hashPassword(password);
 
-                gradeLevel:
-                    document
-                        .getElementById("gradeLevel")
-                        .value,
 
-                school:
-                    document
-                        .getElementById("school")
-                        .value.trim(),
+        if (
+            !account.passwordHash ||
+            account.passwordHash !== passwordHash
+        ) {
 
-                interests:
-                    [
-                        ...document.querySelectorAll(
-                            'input[name="interest"]:checked'
-                        )
-                    ].map(
-                        input => input.value
-                    ),
+            showError(
+                "The email address or password is incorrect."
+            );
 
-                location:
-                    document.querySelector(
-                        'input[name="location"]:checked'
-                    )?.value || "",
+            return;
+        }
 
-                schoolType:
-                    document.querySelector(
-                        'input[name="schoolType"]:checked'
-                    )?.value || "",
 
-                priorities:
-                    [
-                        ...document.querySelectorAll(
-                            'input[name="priority"]:checked'
-                        )
-                    ].map(
-                        input => input.value
-                    ),
+        /* =====================================
+           CREATE SESSION
+        ===================================== */
 
-                financialAid:
-                    document
-                        .getElementById("financialAid")
-                        .value,
+        const session = {
 
-                email:
-                    document
-                        .getElementById("email")
-                        .value.trim()
+            email: account.email,
 
-            };
+            firstName:
+                account.firstName || "",
 
+            lastName:
+                account.lastName || "",
+
+            loggedIn: true,
+
+            loginTime:
+                new Date().toISOString()
+
+        };
+
+
+        if (rememberInput && rememberInput.checked) {
+
+            localStorage.setItem(
+                "webennrollSession",
+                JSON.stringify(session)
+            );
+
+        } else {
 
             sessionStorage.setItem(
-                "webennrollProfile",
-                JSON.stringify(profile)
+                "webennrollSession",
+                JSON.stringify(session)
             );
-
-
-            /*
-             * Password is deliberately NOT stored
-             * in sessionStorage.
-             *
-             * Real authentication will handle
-             * password storage securely.
-             */
-
-
-            alert(
-                "Your WebEnnroll profile is ready. Real account creation will be connected to the authentication backend next."
-            );
-
-
-            window.location.href =
-                "colleges.html";
 
         }
+
+
+        localStorage.setItem(
+            "webennrollLoggedIn",
+            "true"
+        );
+
+
+        /* =====================================
+           SUCCESS
+        ===================================== */
+
+        window.location.href =
+            "Index.html";
+
+    });
+
+
+    /* =========================================
+       CLEAR ERROR WHILE TYPING
+    ========================================= */
+
+    emailInput.addEventListener(
+        "input",
+        hideError
+    );
+
+    passwordInput.addEventListener(
+        "input",
+        hideError
     );
 
 
-    showStep(0);
+    /* =========================================
+       ERROR FUNCTIONS
+    ========================================= */
+
+    function showError(message) {
+
+        if (!loginError) {
+
+            alert(message);
+
+            return;
+        }
+
+
+        loginError.textContent =
+            message;
+
+        loginError.hidden = false;
+
+        loginError.classList.add("show");
+
+    }
+
+
+    function hideError() {
+
+        if (!loginError) {
+            return;
+        }
+
+
+        loginError.textContent = "";
+
+        loginError.hidden = true;
+
+        loginError.classList.remove("show");
+
+    }
+
+
+    /* =========================================
+       PASSWORD HASH
+    ========================================= */
+
+    async function hashPassword(password) {
+
+        const encoder =
+            new TextEncoder();
+
+        const data =
+            encoder.encode(password);
+
+        const hashBuffer =
+            await crypto.subtle.digest(
+                "SHA-256",
+                data
+            );
+
+        const hashArray =
+            Array.from(
+                new Uint8Array(hashBuffer)
+            );
+
+        return hashArray
+            .map(
+                byte =>
+                    byte
+                        .toString(16)
+                        .padStart(2, "0")
+            )
+            .join("");
+
+    }
 
 });
