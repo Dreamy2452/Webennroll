@@ -226,6 +226,7 @@
             text-decoration: none;
             font-size: 12px;
             font-weight: 700;
+            cursor: pointer;
             transition: all 0.15s;
         }
 
@@ -259,6 +260,160 @@
             font-size: 14px;
         }
 
+        /* MODAL POP-UP STYLES */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-card {
+            background: #ffffff;
+            width: min(460px, calc(100% - 32px));
+            padding: 24px;
+            border-radius: 12px;
+            position: relative;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            transform: translateY(10px);
+            transition: transform 0.2s ease;
+        }
+
+        .modal-overlay.active .modal-card {
+            transform: translateY(0);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 14px;
+            right: 16px;
+            background: transparent;
+            border: none;
+            font-size: 22px;
+            color: #64748b;
+            cursor: pointer;
+        }
+
+        .modal-card h3 {
+            margin: 0 0 6px;
+            color: #0f172a;
+            font-size: 18px;
+            padding-right: 20px;
+        }
+
+        .modal-sub {
+            margin: 0 0 18px;
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        .modal-options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .modal-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 11px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 13px;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            text-align: center;
+            transition: background 0.15s;
+        }
+
+        .direct-btn {
+            background: #1f56c5;
+            color: #ffffff;
+        }
+
+        .direct-btn:hover {
+            background: #1844a0;
+        }
+
+        .modal-divider {
+            text-align: center;
+            border-bottom: 1px solid #e2e8f0;
+            line-height: 0.1em;
+            margin: 8px 0 12px;
+        }
+
+        .modal-divider span {
+            background: #ffffff;
+            padding: 0 10px;
+            color: #94a3b8;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .email-form label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: #334155;
+            margin-bottom: 6px;
+        }
+
+        .email-input-group {
+            display: flex;
+            gap: 8px;
+        }
+
+        .email-input-group input {
+            flex: 1;
+            padding: 10px 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            font-size: 13px;
+            outline: none;
+        }
+
+        .email-input-group input:focus {
+            border-color: #1f56c5;
+        }
+
+        .submit-btn {
+            background: #0f172a;
+            color: #ffffff;
+            white-space: nowrap;
+        }
+
+        .submit-btn:hover {
+            background: #1e293b;
+        }
+
+        .success-msg {
+            background: #dcfce7;
+            color: #166534;
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 12.5px;
+            text-align: center;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
         /* MOBILE MENU STYLES */
         @media (max-width: 900px) {
             .college-grid { grid-template-columns: 1fr 1fr; }
@@ -276,17 +431,23 @@
                 padding: 15px 20px;
                 box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
                 border-bottom: 1px solid #e5e8ec;
-                z-index: 100;
+                z-index: 1000;
             }
 
             .desktop-nav.active {
                 display: flex;
+            }
+
+            .menu-button {
+                display: block;
+                z-index: 1001;
             }
         }
 
         @media (max-width: 620px) {
             .college-grid { grid-template-columns: 1fr; }
             .search-tools { flex-direction: column; }
+            .email-input-group { flex-direction: column; }
         }
     </style>
 </head>
@@ -295,11 +456,11 @@
 
     <header class="site-header">
         <div class="header-inner">
-            <a href="Index.html" class="brand">WebEnroll</a>
-            <nav class="desktop-nav">
-                <a href="Index.html">Home</a>
+            <a href="index.html" class="brand">WebEnroll</a>
+            <nav class="desktop-nav" id="desktopNav">
+                <a href="index.html">Home</a>
                 <a href="colleges.html">Find Colleges</a>
-                <a href="Index.html#how-it-works">How It Works</a>
+                <a href="index.html#how-it-works">How It Works</a>
             </nav>
             <div class="header-actions" id="headerActions">
                 <a href="login.html" class="login-link">Sign In</a>
@@ -313,7 +474,7 @@
 
         <section class="colleges-hero">
             <div class="colleges-hero-inner">
-                <a href="Index.html" class="back-link">← Back to home</a>
+                <a href="index.html" class="back-link">← Back to home</a>
                 <h1>Find Colleges</h1>
                 <p>Explore top colleges and universities across Metro Manila with direct admission links and strand recommendations.</p>
             </div>
@@ -373,7 +534,7 @@
                         <p>Local university offering IT, Engineering, Business, and Education degree programs.</p>
                     </div>
                     <div class="college-action">
-                        <a class="official-link" href="https://www.plv.edu.ph/" target="_blank" rel="noopener noreferrer">Admission Portal ↗</a>
+                        <button type="button" class="official-link" onclick="openCollegeModal('Pamantasan ng Lungsod ng Valenzuela (PLV)', 'https://www.plv.edu.ph/')">Apply / Get Form ↗</button>
                         <button type="button" class="save-card-btn" onclick="toggleSaveCollege(this)">+ Save</button>
                     </div>
                 </article>
@@ -392,7 +553,7 @@
                         <p>National polytechnic state university known for Computer Science, Information Technology, and Engineering.</p>
                     </div>
                     <div class="college-action">
-                        <a class="official-link" href="https://www.pup.edu.ph/iapply/" target="_blank" rel="noopener noreferrer">PUP iApply Portal ↗</a>
+                        <button type="button" class="official-link" onclick="openCollegeModal('Polytechnic University of the Philippines (PUP)', 'https://www.pup.edu.ph/iapply/')">Apply / Get Form ↗</button>
                         <button type="button" class="save-card-btn" onclick="toggleSaveCollege(this)">+ Save</button>
                     </div>
                 </article>
@@ -411,7 +572,7 @@
                         <p>The premier state university system offering top-tier Computer Science, Engineering, and Sciences.</p>
                     </div>
                     <div class="college-action">
-                        <a class="official-link" href="https://upcat.up.edu.ph/" target="_blank" rel="noopener noreferrer">UPCAT Portal ↗</a>
+                        <button type="button" class="official-link" onclick="openCollegeModal('UP Diliman', 'https://upcat.up.edu.ph/')">Apply / Get Form ↗</button>
                         <button type="button" class="save-card-btn" onclick="toggleSaveCollege(this)">+ Save</button>
                     </div>
                 </article>
@@ -430,7 +591,7 @@
                         <p>Premier state university for engineering technology, computer technology, and technical education.</p>
                     </div>
                     <div class="college-action">
-                        <a class="official-link" href="https://www.tup.edu.ph/" target="_blank" rel="noopener noreferrer">Admission Portal ↗</a>
+                        <button type="button" class="official-link" onclick="openCollegeModal('Technological University of the Philippines (TUP)', 'https://www.tup.edu.ph/')">Apply / Get Form ↗</button>
                         <button type="button" class="save-card-btn" onclick="toggleSaveCollege(this)">+ Save</button>
                     </div>
                 </article>
@@ -449,7 +610,7 @@
                         <p>Historic university offering Information Systems, IT, Medicine, Architecture, and Business.</p>
                     </div>
                     <div class="college-action">
-                        <a class="official-link" href="https://ustet.ust.edu.ph/" target="_blank" rel="noopener noreferrer">USTET Portal ↗</a>
+                        <button type="button" class="official-link" onclick="openCollegeModal('University of Santo Tomas (UST)', 'https://ustet.ust.edu.ph/')">Apply / Get Form ↗</button>
                         <button type="button" class="save-card-btn" onclick="toggleSaveCollege(this)">+ Save</button>
                     </div>
                 </article>
@@ -468,7 +629,7 @@
                         <p>Specializes in Information Technology, Software Engineering, Game Development, and Animation.</p>
                     </div>
                     <div class="college-action">
-                        <a class="official-link" href="https://www.feutech.edu.ph/" target="_blank" rel="noopener noreferrer">Admissions Site ↗</a>
+                        <button type="button" class="official-link" onclick="openCollegeModal('FEU Institute of Technology', 'https://www.feutech.edu.ph/')">Apply / Get Form ↗</button>
                         <button type="button" class="save-card-btn" onclick="toggleSaveCollege(this)">+ Save</button>
                     </div>
                 </article>
@@ -482,17 +643,51 @@
 
     </main>
 
+    <!-- MODAL POP-UP -->
+    <div class="modal-overlay" id="collegeModal" onclick="handleOverlayClick(event)">
+        <div class="modal-card">
+            <button class="modal-close" onclick="closeCollegeModal()">&times;</button>
+            <h3 id="modalCollegeTitle">School Name</h3>
+            <p class="modal-sub">Choose how you would like to apply or request an admission form:</p>
+
+            <div class="modal-options">
+                <a id="modalDirectLink" href="#" target="_blank" rel="noopener noreferrer" class="modal-btn direct-btn">
+                    🌐 Direct Official Portal ↗
+                </a>
+
+                <div class="modal-divider">
+                    <span>OR</span>
+                </div>
+
+                <form class="email-form" id="emailRequestForm" onsubmit="handleEmailRequest(event)">
+                    <label for="userEmailInput">Send the Admission Form to my Email:</label>
+                    <div class="email-input-group">
+                        <input type="email" id="userEmailInput" placeholder="Enter your email address" required>
+                        <button type="submit" class="modal-btn submit-btn">Request Form</button>
+                    </div>
+                </form>
+
+                <div id="modalSuccessMsg" class="success-msg" hidden>
+                    ✓ Form request sent! Please check your email inbox.
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="js/auth.js"></script>
     <script src="js/app.js"></script>
 
     <script>
+        let activeCollegeName = "";
+
         document.addEventListener("DOMContentLoaded", function () {
-            // Mobile Menu Toggle Fix
+            // Mobile Menu Toggle
             const menuButton = document.getElementById("menuButton");
-            const desktopNav = document.querySelector(".desktop-nav");
+            const desktopNav = document.getElementById("desktopNav");
 
             if (menuButton && desktopNav) {
-                menuButton.addEventListener("click", function () {
+                menuButton.addEventListener("click", function (e) {
+                    e.stopPropagation();
                     desktopNav.classList.toggle("active");
                 });
             }
@@ -500,10 +695,10 @@
             // Read account information stored during signup/profile
             const currentUser = JSON.parse(localStorage.getItem("currentUser") || "{}");
             
-            // Extract First Name from full name entry
+            // Extract First Name safely
             const rawName = currentUser.firstName || currentUser.fullName || currentUser.name || "User";
             const firstName = rawName.trim().split(" ")[0]; 
-            const userStr and = currentUser.strand || "ICT";
+            const userStrand = currentUser.strand || "ICT";
 
             // Update UI with User's First Name & Strand
             const userStrandBadge = document.getElementById("userStrandBadge");
@@ -520,15 +715,18 @@
             const allCards = Array.from(document.querySelectorAll("#collegeList .college-card"));
             const recommendedGrid = document.getElementById("recommendedGrid");
 
-            const recommendedCards = allCards.filter(card => {
-                const strands = card.dataset.strand || "";
-                return strands.includes(userStrand);
-            }).slice(0, 3);
+            if (recommendedGrid) {
+                const recommendedCards = allCards.filter(card => {
+                    const strands = card.dataset.strand || "";
+                    return strands.includes(userStrand);
+                }).slice(0, 3);
 
-            recommendedCards.forEach(card => {
-                const clone = card.cloneNode(true);
-                recommendedGrid.appendChild(clone);
-            });
+                recommendedGrid.innerHTML = ""; 
+                recommendedCards.forEach(card => {
+                    const clone = card.cloneNode(true);
+                    recommendedGrid.appendChild(clone);
+                });
+            }
 
             // Filtering Functionality
             const searchInput = document.getElementById("collegeSearch");
@@ -537,9 +735,9 @@
             const noResults = document.getElementById("noResults");
 
             function filterColleges() {
-                const search = searchInput.value.trim().toLowerCase();
-                const selectedStrand = strandFilter.value;
-                const selectedLocation = locationFilter.value;
+                const search = searchInput ? searchInput.value.trim().toLowerCase() : "";
+                const selectedStrand = strandFilter ? strandFilter.value : "all";
+                const selectedLocation = locationFilter ? locationFilter.value : "all";
 
                 let visibleCount = 0;
 
@@ -560,16 +758,91 @@
                     }
                 });
 
-                noResults.hidden = visibleCount !== 0;
+                if (noResults) {
+                    noResults.hidden = visibleCount !== 0;
+                }
             }
 
-            searchInput.addEventListener("input", filterColleges);
-            strandFilter.addEventListener("change", filterColleges);
-            locationFilter.addEventListener("change", filterColleges);
+            if (searchInput) searchInput.addEventListener("input", filterColleges);
+            if (strandFilter) strandFilter.addEventListener("change", filterColleges);
+            if (locationFilter) locationFilter.addEventListener("change", filterColleges);
 
             updateSavedButtonsState();
         });
 
+        /* MODAL POP-UP LOGIC */
+        function openCollegeModal(title, url) {
+            activeCollegeName = title;
+            document.getElementById("modalCollegeTitle").textContent = title;
+            document.getElementById("modalDirectLink").href = url;
+
+            const currentUser = JSON.parse(localStorage.getItem("currentUser") || "{}");
+            const emailInput = document.getElementById("userEmailInput");
+            if (currentUser.email && emailInput) {
+                emailInput.value = currentUser.email;
+            }
+
+            document.getElementById("modalSuccessMsg").hidden = true;
+            document.getElementById("collegeModal").classList.add("active");
+        }
+
+        function closeCollegeModal() {
+            document.getElementById("collegeModal").classList.remove("active");
+        }
+
+        function handleOverlayClick(event) {
+            if (event.target.id === "collegeModal") {
+                closeCollegeModal();
+            }
+        }
+
+        /* UPDATED EMAIL REQUEST VIA NODE.JS BACKEND */
+        async function handleEmailRequest(event) {
+            event.preventDefault();
+            const email = document.getElementById("userEmailInput").value.trim();
+            if (!email) return;
+
+            const submitBtn = event.target.querySelector("button[type='submit']");
+            const originalBtnText = submitBtn.textContent;
+            submitBtn.textContent = "Sending...";
+            submitBtn.disabled = true;
+
+            try {
+                const response = await fetch("http://127.0.0.1:3000/api/send-email", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        email: email,
+                        college: activeCollegeName
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    const successMsg = document.getElementById("modalSuccessMsg");
+                    successMsg.textContent = "✓ Form request sent! Please check your email inbox.";
+                    successMsg.hidden = false;
+
+                    setTimeout(() => {
+                        closeCollegeModal();
+                        submitBtn.textContent = originalBtnText;
+                        submitBtn.disabled = false;
+                    }, 2000);
+                } else {
+                    alert("Error sending email: " + (data.message || "Failed to send email."));
+                    submitBtn.textContent = originalBtnText;
+                    submitBtn.disabled = false;
+                }
+            } catch (err) {
+                console.error("Fetch error:", err);
+                alert("Hindi makakonekta sa Node.js server! Siguraduhing tumatakbo ang 'node server.js'.");
+                submitBtn.textContent = originalBtnText;
+                submitBtn.disabled = false;
+            }
+        }
+
+        /* SAVE COLLEGE LOGIC */
         function toggleSaveCollege(button) {
             const card = button.closest(".college-card");
             const id = card.dataset.id;
