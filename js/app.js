@@ -10,6 +10,15 @@ document.addEventListener("DOMContentLoaded", () => {
     const mobileMenu = document.getElementById("mobileMenu");
 
     /* =========================================
+       GLOBAL BROKEN IMAGE FALLBACK
+    ========================================= */
+    document.addEventListener('error', function (event) {
+        if (event.target.tagName && event.target.tagName.toLowerCase() === 'img') {
+            event.target.src = 'https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=600&q=80';
+        }
+    }, true);
+
+    /* =========================================
        OPEN MENU
     ========================================= */
     function openMenu() {
@@ -63,33 +72,43 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function checkAndUpdateAuthUI() {
+    let sessionProfile = null;
+
     if (typeof AuthController !== 'undefined') {
         const session = AuthController.getSession();
-
         if (session && session.profile) {
-            // 1. Update Desktop Header Actions
-            const headerActions = document.getElementById('headerActions');
-            if (headerActions) {
-                headerActions.innerHTML = `
-                    <a href="profile.html" class="primary-button small">My Profile</a>
-                `;
-            }
+            sessionProfile = session.profile;
+        }
+    } else {
+        const localUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+        if (localUser.email) {
+            sessionProfile = localUser;
+        }
+    }
 
-            // 2. Update Mobile Menu Links
-            const mobileSignIn = document.getElementById('mobileSignIn');
-            const mobileSignUp = document.getElementById('mobileSignUp');
-            if (mobileSignIn) mobileSignIn.style.display = 'none';
-            if (mobileSignUp) {
-                mobileSignUp.href = 'profile.html';
-                mobileSignUp.textContent = 'My Profile';
-            }
+    if (sessionProfile) {
+        // 1. Update Desktop Header Actions
+        const headerActions = document.getElementById('headerActions');
+        if (headerActions) {
+            headerActions.innerHTML = `
+                <a href="profile.html" class="primary-button small">My Profile</a>
+            `;
+        }
 
-            // 3. Update Hero Button ("Create an Account" -> "My Profile")
-            const heroCta = document.getElementById('heroCta');
-            if (heroCta) {
-                heroCta.href = 'profile.html';
-                heroCta.textContent = 'My Profile';
-            }
+        // 2. Update Mobile Menu Links
+        const mobileSignIn = document.getElementById('mobileSignIn');
+        const mobileSignUp = document.getElementById('mobileSignUp');
+        if (mobileSignIn) mobileSignIn.style.display = 'none';
+        if (mobileSignUp) {
+            mobileSignUp.href = 'profile.html';
+            mobileSignUp.textContent = 'My Profile';
+        }
+
+        // 3. Update Hero Button ("Create an Account" -> "My Profile")
+        const heroCta = document.getElementById('heroCta');
+        if (heroCta) {
+            heroCta.href = 'profile.html';
+            heroCta.textContent = 'My Profile';
         }
     }
 }
